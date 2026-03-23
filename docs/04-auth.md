@@ -286,26 +286,44 @@ export async function POST(request: Request) {
 
 ---
 
+## Step 9: POST /api/auth/logout を作成
+
+`src/app/api/auth/logout/route.ts`
+
+```typescript
+import { cookies } from 'next/headers'
+import { SESSION_COOKIE } from '@/lib/session'
+
+export async function POST() {
+  const cookieStore = await cookies()
+  cookieStore.delete(SESSION_COOKIE)
+
+  return Response.json({ ok: true })
+}
+```
+
+---
+
 ## 動作確認
 
 ```bash
 # 1. ユーザー登録
-curl -X POST http://localhost:3000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"username":"testuser","password":"password123"}'
+curl -X POST http://localhost:3000/api/auth/register -H "Content-Type: application/json" -d '{"username":"testuser","password":"password123"}'
 
 # 2. ログイン（cookie.txt にCookieを保存）
-curl -c cookie.txt -X POST http://localhost:3000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"username":"testuser","password":"password123"}'
+curl -c cookie.txt -X POST http://localhost:3000/api/auth/login -H "Content-Type: application/json" -d '{"username":"testuser","password":"password123"}'
 
 # 3. ログイン中のユーザー確認
 curl -b cookie.txt http://localhost:3000/api/auth/me
 
 # 4. 猫を登録（user_idなし・Cookieで認証）
-curl -b cookie.txt -X POST http://localhost:3000/api/cats \
-  -H "Content-Type: application/json" \
-  -d '{"name":"たま"}'
+curl -b cookie.txt -X POST http://localhost:3000/api/cats -H "Content-Type: application/json" -d '{"name":"たま"}'
+
+# 5. ログアウト
+curl -b cookie.txt -c cookie.txt -X POST http://localhost:3000/api/auth/logout
+
+# 6. ログアウト後の確認（401が返るはず）
+curl -b cookie.txt http://localhost:3000/api/auth/me
 ```
 
 ---
@@ -317,6 +335,7 @@ curl -b cookie.txt -X POST http://localhost:3000/api/cats \
 | `/api/auth/register` | POST | 201 `{ ok, user }` | 400（入力不足）/ 409（username重複） |
 | `/api/auth/login` | POST | 200 `{ ok, user }` + Cookie | 401（認証失敗） |
 | `/api/auth/me` | GET | 200 `{ ok, user }` | 401（未ログイン） |
+| `/api/auth/logout` | POST | 200 `{ ok: true }` | — |
 | `/api/cats` | POST | 201 `{ ok, cat }` | 401（未ログイン）/ 400（name不足） |
 
 ---
@@ -330,5 +349,6 @@ curl -b cookie.txt -X POST http://localhost:3000/api/cats \
 - [ ] `src/app/api/auth/register/route.ts` を作成した
 - [ ] `src/app/api/auth/login/route.ts` を作成した
 - [ ] `src/app/api/auth/me/route.ts` を作成した
+- [ ] `src/app/api/auth/logout/route.ts` を作成した
 - [ ] `src/app/api/cats/route.ts` の POST を修正した
 - [ ] curl で動作確認した

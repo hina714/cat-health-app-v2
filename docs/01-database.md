@@ -185,10 +185,37 @@ CREATE TABLE health_records (
 
 ---
 
+## SQL履歴の管理
+
+Supabase の SQL Editor で実行した SQL は `sql/` フォルダにファイルとして保存しておきます。
+自動適用はされませんが、実行履歴として管理できます。
+
+### ファイル名のルール
+
+```
+YYYYMMDD_連番_内容.sql
+```
+
+例：
+```
+sql/
+├── 20260323_001_create_test.sql   # テスト用テーブル
+├── 20260323_002_create_cats.sql   # 猫テーブル
+└── 20260324_003_add_weight_col.sql  # カラム追加
+```
+
+### 手順
+
+1. Supabase の SQL Editor で SQL を実行する
+2. 成功したら同じ内容を `sql/YYYYMMDD_NNN_内容.sql` として保存する
+
+---
+
 ## チェックリスト
 
-- [ ] Supabase ダッシュボードで接続情報を確認した
-- [ ] `npm install postgres` を実行した
-- [ ] `.env.local` に `DATABASE_URL` を設定した
-- [ ] `src/lib/db.ts` を作成した
-- [ ] Supabase SQL Editor でテーブルを作成した
+- [x] Supabase ダッシュボードで接続情報を確認した
+- [x] `npm install postgres` を実行した
+- [x] `.env.local` に `DATABASE_URL` を設定した
+- [x] `src/lib/db.ts` を作成した
+- [x] `sql/` フォルダを作成してSQL履歴を管理する運用を開始した
+- [ ] 本番テーブルを Supabase SQL Editor で作成した

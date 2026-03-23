@@ -25,7 +25,7 @@
 | Next.js | 16.2.1 | フレームワーク |
 | React | 19.2.4 | UI |
 | TypeScript | ^5 | 型安全な開発 |
-| postgres（postgres.js） | （要インストール） | Supabase への生SQL接続 |
+| postgres（postgres.js） | 3.x | Supabase への生SQL接続 |
 | CSS Modules | 標準機能 | スコープ付きCSS |
 
 ## プロジェクト構造（目標）
@@ -47,5 +47,8 @@ src/
 │       └── cats/
 │           └── route.ts    # APIエンドポイント (/api/cats)
 └── lib/
-    └── db.ts               # Supabase接続ヘルパー
+    └── db.ts               # Supabase接続ヘルパー ✅
+sql/
+├── 20260323_001_create_test.sql   # テスト用テーブル ✅
+└── 20260323_002_create_cats.sql   # 猫テーブル（今後）
 ```

@@ -1,0 +1,6 @@
+{
+  // ファイル保存時に ESLint が自動で修正を実行する
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
+}

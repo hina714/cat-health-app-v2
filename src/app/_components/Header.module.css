@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  height: 60px;
+  background-color: #fff;
+  border-bottom: 1.5px solid #fce7f3;
+  box-shadow: 0 2px 12px rgba(244, 114, 182, 0.08);
+}
+
+.logo {
+  font-size: 17px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #f472b6, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+}
+
+.logoutButton {
+  padding: 7px 16px;
+  background-color: transparent;
+  color: #c084fc;
+  border: 1.5px solid #e9d5ff;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.logoutButton:hover {
+  background-color: #f5f0ff;
+  color: #a78bfa;
+  border-color: #c4b5fd;
+}

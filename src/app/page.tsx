@@ -1,66 +1,37 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import styles from './page.module.css'
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className={styles.main}>
+      <p className={styles.greeting}>✦ my cats ✦</p>
+      <h1 className={styles.title}>うちの子の健康を<br />一緒に守ろう🐾</h1>
+      <p className={styles.description}>毎日の記録が、大切なにゃんこを守る第一歩。</p>
+
+      <div className={styles.cards}>
+        <div className={styles.card}>
+          <div className={styles.cardIcon}>🐱</div>
+          <h2 className={styles.cardTitle}>猫を登録する</h2>
+          <p className={styles.cardDescription}>
+            飼っている猫のプロフィールを登録しましょう。
           </p>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className={styles.card}>
+          <div className={styles.cardIcon}>📋</div>
+          <h2 className={styles.cardTitle}>健康記録</h2>
+          <p className={styles.cardDescription}>
+            体重・食欲・排泄など日々の状態を記録できます。
+          </p>
         </div>
-      </main>
-    </div>
-  );
+
+        <div className={styles.card}>
+          <div className={styles.cardIcon}>💉</div>
+          <h2 className={styles.cardTitle}>ワクチン・通院</h2>
+          <p className={styles.cardDescription}>
+            ワクチン接種日や通院履歴を管理できます。
+          </p>
+        </div>
+      </div>
+    </main>
+  )
 }

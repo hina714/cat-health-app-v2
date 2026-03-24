@@ -91,7 +91,6 @@ export const SESSION_COOKIE = 'session'
 
 export type SessionPayload = {
   userId: string
-  username: string
 }
 
 function getSecret(): Uint8Array {
@@ -115,7 +114,6 @@ export async function verifySession(token: string): Promise<SessionPayload | nul
     const { payload } = await jwtVerify(token, getSecret())
     return {
       userId: payload.userId as string,
-      username: payload.username as string,
     }
   } catch {
     return null
@@ -125,48 +123,21 @@ export async function verifySession(token: string): Promise<SessionPayload | nul
 
 ---
 
-## Step 5: POST /api/auth/register を作成
+## Step 5: ユーザーを手動登録する
 
-`src/app/api/auth/register/route.ts`
+登録APIは公開しません。ローカルで `scripts/create-user.mjs` を実行してユーザーを作成します。
 
-```typescript
-import { hash } from 'bcryptjs'
-import { sql } from '@/lib/db'
-
-export async function POST(request: Request) {
-  const body = await request.json()
-
-  if (!body.username) {
-    return Response.json({ error: 'username は必須です' }, { status: 400 })
-  }
-  if (!body.password || body.password.length < 8) {
-    return Response.json({ error: 'password は8文字以上必須です' }, { status: 400 })
-  }
-
-  // パスワードをハッシュ化してDBに保存
-  const passwordHash = await hash(body.password, 10)
-
-  try {
-    const [user] = await sql`
-      INSERT INTO users (username, password_hash)
-      VALUES (${body.username}, ${passwordHash})
-      RETURNING id, username, created_at
-    `
-    return Response.json({ ok: true, user }, { status: 201 })
-  } catch (err: unknown) {
-    // username が重複している場合（PostgreSQLのエラーコード 23505）
-    if (
-      typeof err === 'object' &&
-      err !== null &&
-      'code' in err &&
-      (err as { code: string }).code === '23505'
-    ) {
-      return Response.json({ error: 'そのユーザー名はすでに使われています' }, { status: 409 })
-    }
-    throw err
-  }
-}
+```bash
+node --env-file=.env.local scripts/create-user.mjs <username> <password>
 ```
+
+例：
+
+```bash
+node --env-file=.env.local scripts/create-user.mjs hina mypassword123
+```
+
+> ユーザー登録APIを公開すると意図しないユーザーにアカウントを作られる恐れがあるため、ローカルでの手動登録のみにしています。
 
 ---
 
@@ -203,10 +174,11 @@ export async function POST(request: Request) {
   }
 
   // JWTを生成してCookieにセット
-  const token = await signSession({ userId: user.id, username: user.username })
+  const token = await signSession({ userId: user.id })
   const cookieStore = await cookies()
   cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 7, // 7日間
@@ -239,7 +211,7 @@ export async function GET() {
     return Response.json({ error: 'セッションが無効です' }, { status: 401 })
   }
 
-  return Response.json({ ok: true, user: { id: session.userId, username: session.username } })
+  return Response.json({ ok: true, user: { id: session.userId } })
 }
 ```
 
@@ -307,8 +279,8 @@ export async function POST() {
 ## 動作確認
 
 ```bash
-# 1. ユーザー登録
-curl -X POST http://localhost:3000/api/auth/register -H "Content-Type: application/json" -d '{"username":"testuser","password":"password123"}'
+# 1. ユーザーを手動登録（ローカルのみ）
+node --env-file=.env.local scripts/create-user.mjs testuser password123
 
 # 2. ログイン（cookie.txt にCookieを保存）
 curl -c cookie.txt -X POST http://localhost:3000/api/auth/login -H "Content-Type: application/json" -d '{"username":"testuser","password":"password123"}'
@@ -332,7 +304,6 @@ curl -b cookie.txt http://localhost:3000/api/auth/me
 
 | エンドポイント | メソッド | 成功時 | エラー時 |
 |---|---|---|---|
-| `/api/auth/register` | POST | 201 `{ ok, user }` | 400（入力不足）/ 409（username重複） |
 | `/api/auth/login` | POST | 200 `{ ok, user }` + Cookie | 401（認証失敗） |
 | `/api/auth/me` | GET | 200 `{ ok, user }` | 401（未ログイン） |
 | `/api/auth/logout` | POST | 200 `{ ok: true }` | — |
@@ -346,7 +317,7 @@ curl -b cookie.txt http://localhost:3000/api/auth/me
 - [ ] `.env.local` に `SESSION_SECRET` を追加した
 - [ ] Supabase で `users` テーブルを作成した
 - [ ] `src/lib/session.ts` を作成した
-- [ ] `src/app/api/auth/register/route.ts` を作成した
+- [ ] `node --env-file=.env.local scripts/create-user.mjs` でユーザーを登録した
 - [ ] `src/app/api/auth/login/route.ts` を作成した
 - [ ] `src/app/api/auth/me/route.ts` を作成した
 - [ ] `src/app/api/auth/logout/route.ts` を作成した

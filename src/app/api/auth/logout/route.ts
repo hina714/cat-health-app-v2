@@ -4,8 +4,12 @@ import { SESSION_COOKIE } from '@/lib/session'
 
 // POST /api/auth/logout — ログアウト
 export async function POST() {
-  const cookieStore = await cookies()
-  cookieStore.delete(SESSION_COOKIE)
+  try {
+    const cookieStore = await cookies()
+    cookieStore.delete(SESSION_COOKIE)
 
-  return Response.json({ ok: true })
+    return Response.json({ ok: true })
+  } catch (e) {
+    return Response.json({ error: 'Server Error' }, { status: 500 })
+  }
 }

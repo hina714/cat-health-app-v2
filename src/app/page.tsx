@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { verifySession, SESSION_COOKIE } from '@/lib/session'
 import { sql } from '@/lib/db'
-import DeleteCatButton from './_components/DeleteCatButton'
 import styles from './page.module.css'
 
 type Cat = {
@@ -50,16 +49,14 @@ export default async function HomePage() {
                       <span className={styles.catEmoji}>🐱</span>
                     )}
                   </div>
-                  <DeleteCatButton catId={cat.id} catName={cat.name} />
+                  <Link href={`/cats/${cat.id}/edit`} className={styles.editButton} aria-label={`${cat.name}を編集`}>
+                    ✎
+                  </Link>
                 </div>
                 <p className={styles.catName}>{cat.name}</p>
                 {cat.breed && <p className={styles.catBreed}>{cat.breed}</p>}
               </div>
             ))}
-            <Link href="/cats/new" className={styles.addCatButton}>
-              <span className={styles.addIcon}>＋</span>
-              <span className={styles.addText}>追加</span>
-            </Link>
           </div>
         </section>
       )}

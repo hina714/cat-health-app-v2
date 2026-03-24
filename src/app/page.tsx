@@ -62,16 +62,6 @@ export default async function HomePage() {
       )}
 
       <div className={styles.cards}>
-        {cats.length === 0 && (
-          <Link href="/cats/new" className={styles.card}>
-            <div className={styles.cardIcon}>🐱</div>
-            <h2 className={styles.cardTitle}>猫を登録する</h2>
-            <p className={styles.cardDescription}>
-              飼っている猫のプロフィールを登録しましょう。
-            </p>
-          </Link>
-        )}
-
         <div className={styles.card}>
           <div className={styles.cardIcon}>📋</div>
           <h2 className={styles.cardTitle}>健康記録</h2>

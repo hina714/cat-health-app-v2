@@ -17,6 +17,7 @@
 | [01-database.md](./01-database.md) | データベースのセットアップ（Supabase + 生SQL） |
 | [02-api.md](./02-api.md) | APIルートの追加方法 |
 | [03-pages.md](./03-pages.md) | 画面（ページ）とCSSの追加方法 |
+| [04-auth.md](./04-auth.md) | JWT認証の追加方法 |
 
 ## 技術スタック
 

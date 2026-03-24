@@ -31,6 +31,113 @@
   line-height: 1.7;
 }
 
+/* ---- 登録済みの猫一覧 ---- */
+.catSection {
+  margin-bottom: 44px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #c084fc;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+
+.catList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+
+.catItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 削除ボタンを重ねるための基準点 */
+.catIconWrapper {
+  position: relative;
+}
+
+/* ホバー時に削除ボタンを表示 */
+.catIconWrapper:hover button {
+  opacity: 1;
+}
+
+.catIcon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: #fce7f3;
+  border: 2px solid #f9a8d4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.catImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.catEmoji {
+  font-size: 32px;
+}
+
+.catName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a4458;
+  margin: 0;
+  text-align: center;
+}
+
+.catBreed {
+  font-size: 11px;
+  color: #9d8fa8;
+  margin: 0;
+  text-align: center;
+}
+
+.addCatButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.addIcon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px dashed #f9a8d4;
+  background-color: #fdf4f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #f472b6;
+  transition: background-color 0.2s;
+}
+
+.addCatButton:hover .addIcon {
+  background-color: #fce7f3;
+}
+
+.addText {
+  font-size: 12px;
+  font-weight: 600;
+  color: #c084fc;
+}
+
+/* ---- 機能カード ---- */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -38,6 +145,9 @@
 }
 
 .card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
   background-color: #fff;
   border: 1.5px solid #fce7f3;
   border-radius: 20px;

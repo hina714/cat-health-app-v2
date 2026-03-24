@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   }
 
   // JWTを生成してHttpOnly Cookieにセット
-  const token = await signSession({ userId: user.id, username: user.username })
+  const token = await signSession({ userId: user.id })
   const cookieStore = await cookies()
   cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,

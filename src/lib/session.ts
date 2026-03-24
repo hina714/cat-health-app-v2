@@ -5,7 +5,6 @@ export const SESSION_COOKIE = 'session'
 // JWTのペイロード（中身）の型定義
 export type SessionPayload = {
   userId: string
-  username: string
 }
 
 // 環境変数からシークレットキーをバイト列に変換
@@ -30,7 +29,6 @@ export async function verifySession(token: string): Promise<SessionPayload | nul
     const { payload } = await jwtVerify(token, getSecret())
     return {
       userId: payload.userId as string,
-      username: payload.username as string,
     }
   } catch {
     return null

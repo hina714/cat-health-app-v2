@@ -11,6 +11,7 @@ type Cat = {
   icon_data: string | null
   breed: string | null
   birthdate: string | null
+  neutered: boolean | null
 }
 
 export default function EditCatForm({ cat }: { cat: Cat }) {
@@ -55,6 +56,7 @@ export default function EditCatForm({ cat }: { cat: Cat }) {
     const name = formData.get('name') as string
     const breed = formData.get('breed') as string
     const birthdate = formData.get('birthdate') as string
+    const neutered = formData.get('neutered') as string // "true" | "false" | "unknown"
 
     // 新しいファイルが選ばれていればエディタから取得、なければ既存のアイコンをそのまま使う
     let iconData: string | null = existingIcon
@@ -70,6 +72,7 @@ export default function EditCatForm({ cat }: { cat: Cat }) {
         icon_data: iconData,
         breed: breed || undefined,
         birthdate: birthdate || undefined,
+        neutered,
       }),
     })
 
@@ -183,6 +186,32 @@ export default function EditCatForm({ cat }: { cat: Cat }) {
               className={styles.input}
             />
           </label>
+
+          <fieldset className={styles.fieldset}>
+            <legend className={styles.legend}>去勢・避妊</legend>
+            <div className={styles.radioGroup}>
+              {[
+                { value: 'true',    label: 'あり' },
+                { value: 'false',   label: 'なし' },
+                { value: 'unknown', label: '不明' },
+              ].map(({ value, label }) => (
+                <label key={value} className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    name="neutered"
+                    value={value}
+                    defaultChecked={
+                      value === 'true'    ? cat.neutered === true :
+                      value === 'false'   ? cat.neutered === false :
+                      cat.neutered === null
+                    }
+                    className={styles.radioInput}
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+          </fieldset>
 
           {error && <p className={styles.error}>{error}</p>}
 

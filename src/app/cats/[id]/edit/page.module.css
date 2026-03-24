@@ -203,6 +203,43 @@
   background-color: #fff;
 }
 
+.fieldset {
+  border: 1.5px solid #fce7f3;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background-color: #fdf4f8;
+}
+
+.legend {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7c6d8a;
+  padding: 0 4px;
+  letter-spacing: 0.02em;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #4a4458;
+  cursor: pointer;
+}
+
+.radioInput {
+  accent-color: #f472b6;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
 .error {
   color: #f87171;
   font-size: 13px;

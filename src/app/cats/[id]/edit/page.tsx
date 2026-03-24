@@ -10,6 +10,7 @@ type Cat = {
   icon_data: string | null
   breed: string | null
   birthdate: string | null
+  neutered: boolean | null
 }
 
 export default async function EditCatPage({ params }: { params: Promise<{ id: string }> }) {
@@ -21,7 +22,7 @@ export default async function EditCatPage({ params }: { params: Promise<{ id: st
 
   const { id } = await params
   const [cat] = await sql<Cat[]>`
-    SELECT id, name, icon_data, breed, birthdate
+    SELECT id, name, icon_data, breed, birthdate, neutered
     FROM cats
     WHERE id = ${id} AND user_id = ${session.userId}
   `

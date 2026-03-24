@@ -30,15 +30,20 @@ export async function PATCH(
     }
 
     // user_id も条件に含めることで、他人の猫は更新できないようにする
+    // neutered: "true" → true、"false" → false、それ以外（"unknown" など）→ null
+    const neutered =
+      body.neutered === 'true' ? true : body.neutered === 'false' ? false : null
+
     const [cat] = await sql`
       UPDATE cats
       SET
         name      = ${body.name.trim()},
         icon_data = ${body.icon_data ?? null},
         breed     = ${body.breed?.trim() || null},
-        birthdate = ${body.birthdate || null}
+        birthdate = ${body.birthdate || null},
+        neutered  = ${neutered}
       WHERE id = ${id} AND user_id = ${userId}
-      RETURNING id, name, icon_data, breed, birthdate, created_at
+      RETURNING id, name, icon_data, breed, birthdate, neutered, created_at
     `
 
     if (!cat) {

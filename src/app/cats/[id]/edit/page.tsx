@@ -2,15 +2,13 @@ import { cookies } from 'next/headers'
 import { redirect, notFound } from 'next/navigation'
 import { verifySession, SESSION_COOKIE } from '@/lib/session'
 import { sql } from '@/lib/db'
-import EditCatForm from './EditCatForm'
+import CatEditForm from './CatEditForm'
+import styles from './page.module.css'
 
 type Cat = {
   id: string
   name: string
   icon_data: string | null
-  breed: string | null
-  birthdate: string | null
-  neutered: boolean | null
 }
 
 export default async function EditCatPage({ params }: { params: Promise<{ id: string }> }) {
@@ -20,12 +18,17 @@ export default async function EditCatPage({ params }: { params: Promise<{ id: st
   if (!session) redirect('/login')
 
   const { id } = await params
-  const [cat] = await sql<Cat[]>`
-    SELECT id, name, icon_data, breed, birthdate, neutered
+  const [cat]: [Cat?] = await sql`
+    SELECT id, name, icon_data
     FROM cats
-    WHERE id = ${id} AND user_id = ${session.userId}
+    WHERE id = ${id}
   `
   if (!cat) notFound()
 
-  return <EditCatForm cat={cat} />
+  return (
+    <main className={styles.main}>
+      <h1 className={styles.title}>{cat.name} のアイコン編集</h1>
+      <CatEditForm cat={cat} />
+    </main>
+  )
 }

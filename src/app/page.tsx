@@ -58,13 +58,13 @@ export default async function HomePage() {
       )}
 
       <div className={styles.cards}>
-        <div className={styles.card}>
+        <Link href="/records" className={styles.card}>
           <div className={styles.cardIcon}>📋</div>
           <h2 className={styles.cardTitle}>健康記録</h2>
           <p className={styles.cardDescription}>
             体重・食欲・排泄など日々の状態を記録できます。
           </p>
-        </div>
+        </Link>
 
         <div className={styles.card}>
           <div className={styles.cardIcon}>💉</div>

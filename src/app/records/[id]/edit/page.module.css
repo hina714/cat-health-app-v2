@@ -1,0 +1,12 @@
+.main {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 52px 24px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #4a4458;
+  margin-bottom: 36px;
+}

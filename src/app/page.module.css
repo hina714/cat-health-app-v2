@@ -31,6 +31,65 @@
   line-height: 1.7;
 }
 
+.catsSection {
+  margin-bottom: 44px;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #9d8fa8;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.catList {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.catItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.catIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #fce7f3;
+  text-decoration: none;
+  transition: box-shadow 0.2s;
+}
+
+.catIconWrapper:hover {
+  box-shadow: 0 4px 16px rgba(244, 114, 182, 0.3);
+}
+
+.catIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.catIconDefault {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.catName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a4458;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));

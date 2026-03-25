@@ -62,7 +62,6 @@
 cats（猫）                       ← 家族全員で共有（特定ユーザーに紐づけない）
 
 records（健康記録）
-  ├── cat_id  → cats            ← どの猫の記録か
   └── user_id → users           ← 誰が書いたか（編集権限の判定に使う）
 
 comments（コメント）

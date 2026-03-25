@@ -9,32 +9,43 @@
 
 ## 設計の前提と意図
 
-### このアプリの利用想定
+### 猫は「家族（household）」に紐づく
 
-- **利用者は家族で1アカウントを共有する**
-  - 「猫は家族で管理するもの」という前提のもと、家族全員が同じ username / password でログインする運用を想定している
-  - 複数アカウントへの猫の共有機能（招待・権限管理など）は現時点では対象外
+家族みんなで同じ猫を管理するため、猫は特定のユーザーではなく **household（家族）** に紐づける。
 
-### なぜ `user_id` で猫を紐づけるのか
+```
+households（家族）
+  └── users（ユーザー）  ← 家族の各メンバー
+  └── cats（猫）         ← 家族の猫
+```
 
-- 将来的に複数ユーザーがアプリを使う場合でも、**自分（家族）の猫だけが見える**ようにするため
-- `user_id` を持たせることで、他の家族（別アカウント）のデータが混ざらないようデータを分離している
-- API 側では `WHERE user_id = セッションのユーザーID` の条件を必ず付けることで、他人のデータへのアクセスを防いでいる（**認可**）
-
-### 今後の拡張について
-
-- 家族それぞれが個別のアカウントを持ちたい場合は、`cat_members` のような中間テーブルで「猫とユーザーの多対多」に設計を変更することを検討する
+- 家族内の誰がログインしても、同じ猫のデータを閲覧・編集できる
+- `household_id` を条件にすることで、他の家族のデータは見えないようにする（**認可**）
 
 ---
 
 ## データ仕様
+
+### households テーブル
+
+| カラム | 型 | 必須 | 説明 |
+|---|---|---|---|
+| `id` | UUID | ✓ | 主キー（自動生成） |
+| `name` | TEXT | ✓ | 家族名（例: 青木家） |
+| `created_at` | TIMESTAMPTZ | | 登録日時（自動セット） |
+
+### users テーブル（変更点）
+
+| カラム | 型 | 必須 | 説明 |
+|---|---|---|---|
+| `household_id` | UUID | | 所属する家族（`households.id` への参照） |
 
 ### cats テーブル
 
 | カラム | 型 | 必須 | 説明 |
 |---|---|---|---|
 | `id` | UUID | ✓ | 主キー（自動生成） |
-| `user_id` | UUID | ✓ | 登録者（`users.id` への参照） |
+| `household_id` | UUID | ✓ | 所属する家族（`households.id` への参照） |
 | `name` | TEXT | ✓ | 猫の名前 |
 | `icon_data` | TEXT | | アイコン画像（base64） |
 | `breed` | TEXT | | 品種 |
@@ -44,14 +55,17 @@
 
 ---
 
-## 初期データ登録
-
-猫のデータは seed スクリプトで登録する。
+## 初期データ登録手順
 
 ```bash
-node --env-file=.env.local scripts/seed-cat.mjs <username> <cat_name> [breed] [birthdate]
+# 1. 家族を登録する
+node --env-file=.env.local scripts/seed-household.mjs 青木家
+# → household ID が表示される
 
-# 例
+# 2. ユーザーを登録する（household_id を指定）
+node --env-file=.env.local scripts/create-user.mjs hina mypassword <household_id>
+
+# 3. 猫を登録する（username 経由で household に紐づく）
 node --env-file=.env.local scripts/seed-cat.mjs hina たま 三毛猫 2022-04-01
 ```
 
@@ -60,7 +74,7 @@ node --env-file=.env.local scripts/seed-cat.mjs hina たま 三毛猫 2022-04-01
 ## API仕様
 
 ### GET /api/cats
-ログイン中のユーザーの猫一覧を返す。
+ログイン中のユーザーの家族（household）に紐づく猫を返す。
 
 - 認証: 必須（未ログインは 401）
 - レスポンス: `{ ok: true, cats: [...] }`
@@ -69,7 +83,7 @@ node --env-file=.env.local scripts/seed-cat.mjs hina たま 三毛猫 2022-04-01
 猫のプロフィールを更新する。
 
 - 認証: 必須（未ログインは 401）
-- 制約: 自分の猫のみ更新可能（他人の ID を指定しても 404）
+- 制約: 自分の家族（household）の猫のみ更新可能
 - リクエスト: `{ name, icon_data?, breed?, birthdate?, neutered? }`
 - バリデーション: `name` が空の場合は 400
 - レスポンス: `{ ok: true, cat: {...} }`

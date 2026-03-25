@@ -1,14 +1,14 @@
 // scripts/create-user.mjs
 // ローカルでユーザーを手動登録するスクリプト
-// 使い方: node --env-file=.env.local scripts/create-user.mjs <username> <password>
+// 使い方: node --env-file=.env.local scripts/create-user.mjs <username> <password> <household_id>
 
 import { hash } from 'bcryptjs'
 import postgres from 'postgres'
 
-const [username, password] = process.argv.slice(2)
+const [username, password, householdId] = process.argv.slice(2)
 
-if (!username || !password) {
-  console.error('使い方: node scripts/create-user.mjs <username> <password>')
+if (!username || !password || !householdId) {
+  console.error('使い方: node scripts/create-user.mjs <username> <password> <household_id>')
   process.exit(1)
 }
 
@@ -17,9 +17,9 @@ const sql = postgres(process.env.DATABASE_URL)
 try {
   const passwordHash = await hash(password, 12)
   const [user] = await sql`
-    INSERT INTO users (username, password_hash)
-    VALUES (${username}, ${passwordHash})
-    RETURNING id, username, created_at
+    INSERT INTO users (username, password_hash, household_id)
+    VALUES (${username}, ${passwordHash}, ${householdId})
+    RETURNING id, username, household_id, created_at
   `
   console.log('ユーザーを作成しました:', user)
 } catch (err) {

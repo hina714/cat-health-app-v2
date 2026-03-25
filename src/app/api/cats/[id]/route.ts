@@ -2,23 +2,25 @@ import { cookies } from 'next/headers'
 import { sql } from '@/lib/db'
 import { verifySession, SESSION_COOKIE } from '@/lib/session'
 
-// セッションからユーザーIDを取得するヘルパー
-async function getUserId(): Promise<string | null> {
+// セッションのユーザーIDから household_id を取得するヘルパー
+async function getHouseholdId(): Promise<string | null> {
   const cookieStore = await cookies()
   const token = cookieStore.get(SESSION_COOKIE)?.value
   if (!token) return null
   const session = await verifySession(token)
-  return session?.userId ?? null
+  if (!session) return null
+  const [user] = await sql`SELECT household_id FROM users WHERE id = ${session.userId}`
+  return user?.household_id ?? null
 }
 
-// PATCH /api/cats/[id] — 自分の猫の情報を更新する
+// PATCH /api/cats/[id] — 家族（household）の猫のプロフィールを更新する
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const userId = await getUserId()
-    if (!userId) {
+    const householdId = await getHouseholdId()
+    if (!householdId) {
       return Response.json({ error: 'ログインしていません' }, { status: 401 })
     }
 
@@ -29,11 +31,10 @@ export async function PATCH(
       return Response.json({ error: '名前は必須です' }, { status: 400 })
     }
 
-    // user_id も条件に含めることで、他人の猫は更新できないようにする
-    // neutered: "true" → true、"false" → false、それ以外（"unknown" など）→ null
     const neutered =
       body.neutered === 'true' ? true : body.neutered === 'false' ? false : null
 
+    // household_id も条件に含めることで、他の家族の猫は更新できないようにする
     const [cat] = await sql`
       UPDATE cats
       SET
@@ -42,7 +43,7 @@ export async function PATCH(
         breed     = ${body.breed?.trim() || null},
         birthdate = ${body.birthdate || null},
         neutered  = ${neutered}
-      WHERE id = ${id} AND user_id = ${userId}
+      WHERE id = ${id} AND household_id = ${householdId}
       RETURNING id, name, icon_data, breed, birthdate, neutered, created_at
     `
 

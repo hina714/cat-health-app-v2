@@ -16,16 +16,20 @@ if (!username || !catName) {
 const sql = postgres(process.env.DATABASE_URL)
 
 try {
-  // username からユーザーIDを取得
-  const [user] = await sql`SELECT id FROM users WHERE username = ${username}`
+  // username から household_id を取得
+  const [user] = await sql`SELECT household_id FROM users WHERE username = ${username}`
   if (!user) {
     console.error(`エラー: ユーザー "${username}" が見つかりません`)
     process.exit(1)
   }
+  if (!user.household_id) {
+    console.error(`エラー: ユーザー "${username}" に household が紐づいていません`)
+    process.exit(1)
+  }
 
   const [cat] = await sql`
-    INSERT INTO cats (user_id, name, breed, birthdate)
-    VALUES (${user.id}, ${catName}, ${breed ?? null}, ${birthdate ?? null})
+    INSERT INTO cats (household_id, name, breed, birthdate)
+    VALUES (${user.household_id}, ${catName}, ${breed ?? null}, ${birthdate ?? null})
     RETURNING id, name, breed, birthdate, created_at
   `
   console.log('猫を登録しました:', cat)

@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN household_id UUID REFERENCES households(id) ON DELETE SET NULL;

@@ -9,43 +9,27 @@
 
 ## 設計の前提と意図
 
-### 猫は「家族（household）」に紐づく
+### 猫は「ユーザー」に紐づく
 
-家族みんなで同じ猫を管理するため、猫は特定のユーザーではなく **household（家族）** に紐づける。
+猫は `users` テーブルの `user_id` で管理する。
 
 ```
-households（家族）
-  └── users（ユーザー）  ← 家族の各メンバー
-  └── cats（猫）         ← 家族の猫
+users（ユーザー）
+  └── cats（猫）
 ```
 
-- 家族内の誰がログインしても、同じ猫のデータを閲覧・編集できる
-- `household_id` を条件にすることで、他の家族のデータは見えないようにする（**認可**）
+- `user_id` を条件にすることで、自分の猫のデータのみ閲覧・編集できる（**認可**）
 
 ---
 
 ## データ仕様
-
-### households テーブル
-
-| カラム | 型 | 必須 | 説明 |
-|---|---|---|---|
-| `id` | UUID | ✓ | 主キー（自動生成） |
-| `name` | TEXT | ✓ | 家族名（例: 青木家） |
-| `created_at` | TIMESTAMPTZ | | 登録日時（自動セット） |
-
-### users テーブル（変更点）
-
-| カラム | 型 | 必須 | 説明 |
-|---|---|---|---|
-| `household_id` | UUID | | 所属する家族（`households.id` への参照） |
 
 ### cats テーブル
 
 | カラム | 型 | 必須 | 説明 |
 |---|---|---|---|
 | `id` | UUID | ✓ | 主キー（自動生成） |
-| `household_id` | UUID | ✓ | 所属する家族（`households.id` への参照） |
+| `user_id` | UUID | ✓ | 所属するユーザー（`users.id` への参照） |
 | `name` | TEXT | ✓ | 猫の名前 |
 | `icon_data` | TEXT | | アイコン画像（base64） |
 | `breed` | TEXT | | 品種 |
@@ -58,14 +42,10 @@ households（家族）
 ## 初期データ登録手順
 
 ```bash
-# 1. 家族を登録する
-node --env-file=.env.local scripts/seed-household.mjs 青木家
-# → household ID が表示される
+# 1. ユーザーを登録する
+node --env-file=.env.local scripts/create-user.mjs hina mypassword
 
-# 2. ユーザーを登録する（household_id を指定）
-node --env-file=.env.local scripts/create-user.mjs hina mypassword <household_id>
-
-# 3. 猫を登録する（username 経由で household に紐づく）
+# 2. 猫を登録する（username で users に紐づく）
 node --env-file=.env.local scripts/seed-cat.mjs hina たま 三毛猫 2022-04-01
 ```
 
@@ -74,7 +54,7 @@ node --env-file=.env.local scripts/seed-cat.mjs hina たま 三毛猫 2022-04-01
 ## API仕様
 
 ### GET /api/cats
-ログイン中のユーザーの家族（household）に紐づく猫を返す。
+ログイン中のユーザーに紐づく猫を返す。
 
 - 認証: 必須（未ログインは 401）
 - レスポンス: `{ ok: true, cats: [...] }`
@@ -83,7 +63,7 @@ node --env-file=.env.local scripts/seed-cat.mjs hina たま 三毛猫 2022-04-01
 猫のプロフィールを更新する。
 
 - 認証: 必須（未ログインは 401）
-- 制約: 自分の家族（household）の猫のみ更新可能
+- 制約: 自分のユーザーの猫のみ更新可能
 - リクエスト: `{ name, icon_data?, breed?, birthdate?, neutered? }`
 - バリデーション: `name` が空の場合は 400
 - レスポンス: `{ ok: true, cat: {...} }`

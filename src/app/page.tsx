@@ -19,17 +19,12 @@ export default async function HomePage() {
 
   let cats: Cat[] = []
   if (session) {
-    const [user] = await sql<{ household_id: string | null }[]>`
-      SELECT household_id FROM users WHERE id = ${session.userId}
+    cats = await sql<Cat[]>`
+      SELECT id, name, icon_data, breed
+      FROM cats
+      WHERE user_id = ${session.userId}
+      ORDER BY created_at ASC
     `
-    if (user?.household_id) {
-      cats = await sql<Cat[]>`
-        SELECT id, name, icon_data, breed
-        FROM cats
-        WHERE household_id = ${user.household_id}
-        ORDER BY created_at ASC
-      `
-    }
   }
 
   return (

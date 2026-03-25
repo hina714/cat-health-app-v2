@@ -22,15 +22,10 @@ export default async function EditCatPage({ params }: { params: Promise<{ id: st
 
   const { id } = await params
 
-  const [user] = await sql<{ household_id: string | null }[]>`
-    SELECT household_id FROM users WHERE id = ${session.userId}
-  `
-  if (!user?.household_id) redirect('/login')
-
   const [cat] = await sql<Cat[]>`
     SELECT id, name, icon_data, breed, birthdate, neutered
     FROM cats
-    WHERE id = ${id} AND household_id = ${user.household_id}
+    WHERE id = ${id} AND user_id = ${session.userId}
   `
 
   if (!cat) notFound()

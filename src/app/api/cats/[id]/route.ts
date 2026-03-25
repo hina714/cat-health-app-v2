@@ -2,25 +2,22 @@ import { cookies } from 'next/headers'
 import { sql } from '@/lib/db'
 import { verifySession, SESSION_COOKIE } from '@/lib/session'
 
-// セッションのユーザーIDから household_id を取得するヘルパー
-async function getHouseholdId(): Promise<string | null> {
+async function getUserId(): Promise<string | null> {
   const cookieStore = await cookies()
   const token = cookieStore.get(SESSION_COOKIE)?.value
   if (!token) return null
   const session = await verifySession(token)
-  if (!session) return null
-  const [user] = await sql`SELECT household_id FROM users WHERE id = ${session.userId}`
-  return user?.household_id ?? null
+  return session?.userId ?? null
 }
 
-// PATCH /api/cats/[id] — 家族（household）の猫のプロフィールを更新する
+// PATCH /api/cats/[id] — ログイン中のユーザーの猫のプロフィールを更新する
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const householdId = await getHouseholdId()
-    if (!householdId) {
+    const userId = await getUserId()
+    if (!userId) {
       return Response.json({ error: 'ログインしていません' }, { status: 401 })
     }
 
@@ -34,7 +31,7 @@ export async function PATCH(
     const neutered =
       body.neutered === 'true' ? true : body.neutered === 'false' ? false : null
 
-    // household_id も条件に含めることで、他の家族の猫は更新できないようにする
+    // user_id も条件に含めることで、他のユーザーの猫は更新できないようにする
     const [cat] = await sql`
       UPDATE cats
       SET
@@ -43,7 +40,7 @@ export async function PATCH(
         breed     = ${body.breed?.trim() || null},
         birthdate = ${body.birthdate || null},
         neutered  = ${neutered}
-      WHERE id = ${id} AND household_id = ${householdId}
+      WHERE id = ${id} AND user_id = ${userId}
       RETURNING id, name, icon_data, breed, birthdate, neutered, created_at
     `
 

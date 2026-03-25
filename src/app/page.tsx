@@ -66,13 +66,7 @@ export default async function HomePage() {
           </p>
         </Link>
 
-        <div className={styles.card}>
-          <div className={styles.cardIcon}>💉</div>
-          <h2 className={styles.cardTitle}>ワクチン・通院</h2>
-          <p className={styles.cardDescription}>
-            ワクチン接種日や通院履歴を管理できます。
-          </p>
-        </div>
+
       </div>
     </main>
   )

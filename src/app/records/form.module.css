@@ -1,0 +1,113 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a4458;
+}
+
+.input {
+  padding: 10px 14px;
+  border: 1.5px solid #e9d5f5;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #4a4458;
+  outline: none;
+  max-width: 160px;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #a78bfa;
+}
+
+.radioGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #4a4458;
+  cursor: pointer;
+}
+
+.radio {
+  accent-color: #a78bfa;
+}
+
+.textarea {
+  padding: 10px 14px;
+  border: 1.5px solid #e9d5f5;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #4a4458;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.6;
+  transition: border-color 0.2s;
+}
+
+.textarea:focus {
+  border-color: #a78bfa;
+}
+
+.errorMsg {
+  font-size: 13px;
+  color: #ef4444;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.btnPrimary {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #f472b6, #a78bfa);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnCancel {
+  padding: 10px 24px;
+  background: transparent;
+  color: #9d8fa8;
+  border: 1.5px solid #e9d5f5;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnCancel:hover {
+  background-color: #fdf2f8;
+}

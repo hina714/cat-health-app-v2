@@ -1,0 +1,202 @@
+.main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 52px 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #4a4458;
+}
+
+.btnNew {
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #f472b6, #a78bfa);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.btnNew:hover {
+  opacity: 0.85;
+}
+
+.empty {
+  color: #9d8fa8;
+  font-size: 14px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 記録カード */
+.card {
+  background: #fff;
+  border: 1.5px solid #fce7f3;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.author {
+  font-size: 13px;
+  font-weight: 600;
+  color: #a78bfa;
+}
+
+.date {
+  font-size: 12px;
+  color: #9d8fa8;
+  flex: 1;
+}
+
+.editLink {
+  font-size: 12px;
+  color: #f472b6;
+  text-decoration: none;
+  border: 1px solid #f472b6;
+  border-radius: 12px;
+  padding: 2px 10px;
+}
+
+.editLink:hover {
+  background-color: #fdf2f8;
+}
+
+/* フィールド */
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.field {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.field dt {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9d8fa8;
+}
+
+.field dd {
+  font-size: 14px;
+  color: #4a4458;
+}
+
+.fieldMemo {
+  width: 100%;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fieldMemo dd {
+  font-size: 13px;
+  color: #4a4458;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* コメント */
+.comments {
+  border-top: 1px solid #fce7f3;
+  padding-top: 16px;
+}
+
+.commentList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.comment {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 13px;
+}
+
+.commentAuthor {
+  font-weight: 600;
+  color: #a78bfa;
+  white-space: nowrap;
+}
+
+.commentBody {
+  color: #4a4458;
+  flex: 1;
+}
+
+.commentDate {
+  font-size: 11px;
+  color: #9d8fa8;
+  white-space: nowrap;
+}
+
+.commentForm {
+  display: flex;
+  gap: 8px;
+}
+
+.commentInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1.5px solid #e9d5f5;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #4a4458;
+  outline: none;
+}
+
+.commentInput:focus {
+  border-color: #a78bfa;
+}
+
+.commentBtn {
+  padding: 8px 16px;
+  background: #a78bfa;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.commentBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.errorMsg {
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 4px;
+}

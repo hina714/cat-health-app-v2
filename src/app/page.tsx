@@ -65,8 +65,6 @@ export default async function HomePage() {
             体重・食欲・排泄など日々の状態を記録できます。
           </p>
         </Link>
-
-
       </div>
     </main>
   )

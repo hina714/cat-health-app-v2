@@ -60,6 +60,8 @@
 }
 
 .card {
+  display: block;
+  text-decoration: none;
   background-color: #fff;
   border: 1.5px solid #fce7f3;
   border-radius: 20px;

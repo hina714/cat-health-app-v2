@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { verifySession, SESSION_COOKIE } from '@/lib/session'
 import { sql } from '@/lib/db'
@@ -34,7 +35,7 @@ export default async function HomePage() {
           <h2 className={styles.sectionTitle}>うちの子</h2>
           <div className={styles.catList}>
             {cats.map((cat) => (
-              <div key={cat.id} className={styles.catItem}>
+              <Link key={cat.id} href={`/cats/${cat.id}`} className={styles.catItem}>
                 <div className={styles.catIconWrapper}>
                   {cat.icon_data ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -48,7 +49,7 @@ export default async function HomePage() {
                   )}
                 </div>
                 <p className={styles.catName}>{cat.name}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
@@ -63,13 +64,6 @@ export default async function HomePage() {
           </p>
         </div>
 
-        <div className={styles.card}>
-          <div className={styles.cardIcon}>💉</div>
-          <h2 className={styles.cardTitle}>ワクチン・通院</h2>
-          <p className={styles.cardDescription}>
-            ワクチン接種日や通院履歴を管理できます。
-          </p>
-        </div>
       </div>
     </main>
   )

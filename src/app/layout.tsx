@@ -21,8 +21,15 @@ export default async function RootLayout({
   return (
     <html lang="ja">
       <body>
-        {session && <Header />}
-        {children}
+        <div className="pawBg">
+          {Array.from({ length: 8 }, (_, i) => (
+            <span key={i} className="paw">🐾</span>
+          ))}
+        </div>
+        <div className="appWrapper">
+          {session && <Header />}
+          {children}
+        </div>
       </body>
     </html>
   );

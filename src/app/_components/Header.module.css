@@ -4,15 +4,16 @@
   justify-content: space-between;
   padding: 0 28px;
   height: 60px;
-  background-color: #fff;
-  border-bottom: 1.5px solid #fce7f3;
-  box-shadow: 0 2px 12px rgba(244, 114, 182, 0.08);
+  background-color: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 12px rgba(242, 160, 184, 0.12);
 }
 
 .logo {
   font-size: 17px;
   font-weight: bold;
-  background: linear-gradient(135deg, #f472b6, #a78bfa);
+  background: var(--primary-grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -22,18 +23,18 @@
 .logoutButton {
   padding: 7px 16px;
   background-color: transparent;
-  color: #c084fc;
-  border: 1.5px solid #e9d5ff;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
   letter-spacing: 0.02em;
 }
 
 .logoutButton:hover {
-  background-color: #f5f0ff;
-  color: #a78bfa;
-  border-color: #c4b5fd;
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+  transform: translateY(-1px);
 }

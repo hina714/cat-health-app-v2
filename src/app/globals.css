@@ -1,12 +1,16 @@
 :root {
-  --bg: #fdf4f8;
-  --surface: #ffffff;
-  --primary: #f472b6;
-  --primary-grad: linear-gradient(135deg, #f472b6, #a78bfa);
-  --text: #4a4458;
-  --text-muted: #9d8fa8;
-  --border: #fce7f3;
-  --shadow: 0 4px 24px rgba(244, 114, 182, 0.12);
+  --bg:            #FEF0F5;
+  --surface:       #ffffff;
+  --primary:       #F2A0B8;
+  --primary-dark:  #E07898;
+  --primary-light: #FFD8E8;
+  --secondary:     #D4AAEE;
+  --secondary-dark:#B888D8;
+  --primary-grad:  linear-gradient(135deg, #F2A0B8, #C8A0E0);
+  --text:          #5A3A4A;
+  --text-muted:    #A88898;
+  --border:        #F5C8D8;
+  --shadow:        0 4px 24px rgba(242, 160, 184, 0.25);
 }
 
 html {
@@ -39,4 +43,52 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* ── アニメーション定義 ── */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pawFloat {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50%       { transform: translateY(-16px) rotate(var(--r, 0deg)); }
+}
+
+/* ── 肉球の背景レイヤー ── */
+
+.pawBg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.paw {
+  position: absolute;
+  animation: pawFloat ease-in-out infinite;
+  user-select: none;
+  line-height: 1;
+}
+
+.paw:nth-child(1) { top:  8%; left:  4%;  font-size: 28px; opacity: 0.18; animation-duration: 5.0s; animation-delay:  0.0s; --r: -20deg; }
+.paw:nth-child(2) { top: 18%; right: 7%;  font-size: 18px; opacity: 0.15; animation-duration: 7.0s; animation-delay: -2.0s; --r:  15deg; }
+.paw:nth-child(3) { top: 38%; left: 86%;  font-size: 40px; opacity: 0.13; animation-duration: 6.0s; animation-delay: -1.0s; --r: -35deg; }
+.paw:nth-child(4) { top: 52%; left:  3%;  font-size: 22px; opacity: 0.17; animation-duration: 8.0s; animation-delay: -3.0s; --r:  10deg; }
+.paw:nth-child(5) { top: 72%; right: 8%;  font-size: 32px; opacity: 0.14; animation-duration: 5.5s; animation-delay: -4.0s; --r: -10deg; }
+.paw:nth-child(6) { top: 88%; left: 18%;  font-size: 24px; opacity: 0.16; animation-duration: 9.0s; animation-delay: -1.5s; --r:  25deg; }
+.paw:nth-child(7) { top: 28%; left: 47%;  font-size: 16px; opacity: 0.13; animation-duration: 7.5s; animation-delay: -5.0s; --r:  -5deg; }
+.paw:nth-child(8) { top: 62%; left: 57%;  font-size: 36px; opacity: 0.14; animation-duration: 6.5s; animation-delay: -2.5s; --r:  40deg; }
+
+/* ── コンテンツラッパー（肉球の上に乗せる） ── */
+
+.appWrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }

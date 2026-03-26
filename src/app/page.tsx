@@ -46,7 +46,7 @@ export default async function HomePage() {
                       <span className={styles.catEmoji}>🐱</span>
                     )}
                   </div>
-                  <Link href={`/cats/${cat.id}/edit`} className={styles.editButton} aria-label={`${cat.name}を編集`}>
+                  <Link href={`/cats/${cat.id}`} className={styles.editButton} aria-label={`${cat.name}のプロフィール`}>
                     ✎
                   </Link>
                 </div>

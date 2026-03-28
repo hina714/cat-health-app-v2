@@ -111,6 +111,62 @@
 }
 
 
+/* 写真アップロード */
+.imageLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border: 1.5px dashed var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  align-self: flex-start;
+}
+
+.imageLabel:hover {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+.imageInput {
+  display: none;
+}
+
+.imagePreviewWrapper {
+  position: relative;
+  display: inline-block;
+  margin-top: 8px;
+}
+
+.imagePreview {
+  max-width: 240px;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+.imageRemove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  color: white;
+  border: none;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .textarea {
   padding: 12px 14px;
   border: 1.5px solid var(--border);

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './form.module.css'
+import { compressImage } from '@/lib/compressImage'
 
 
 const EXCRETION_OPTIONS = ['正常', '異常', 'なし']
@@ -30,9 +31,17 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
   const [excretion, setExcretion] = useState(initial.excretion ?? '')
   const [condition, setCondition] = useState(initial.condition ?? '')
   const [memo, setMemo] = useState(initial.memo ?? '')
+  const [imageData, setImageData] = useState<string | null>(null)
 
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
+  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const compressed = await compressImage(file)
+    setImageData(compressed)
+  }
 
   async function handleSubmit() {
     setSaving(true)
@@ -50,6 +59,7 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
         excretion: excretion || null,
         condition: condition || null,
         memo: memo || null,
+        image_data: imageData || null,
       }),
     })
 
@@ -177,6 +187,33 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
           placeholder="気になったことや様子を記録しましょう"
           rows={4}
         />
+      </div>
+
+      {/* 画像 */}
+      <div className={styles.field}>
+        <label className={styles.label}>写真</label>
+        <label className={styles.imageLabel}>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className={styles.imageInput}
+          />
+          {imageData ? '写真を変更する' : '📷 写真を追加する'}
+        </label>
+        {imageData && (
+          <div className={styles.imagePreviewWrapper}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={imageData} alt="プレビュー" className={styles.imagePreview} />
+            <button
+              type="button"
+              onClick={() => setImageData(null)}
+              className={styles.imageRemove}
+            >
+              ✕
+            </button>
+          </div>
+        )}
       </div>
 
       {error && <p className={styles.errorMsg}>{error}</p>}

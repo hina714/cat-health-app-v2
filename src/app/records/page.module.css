@@ -1,7 +1,7 @@
 .main {
-  max-width: 900px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 52px 24px;
+  padding: 52px 40px;
 }
 
 .backLink {
@@ -91,7 +91,7 @@
 
 .list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(560px, 1fr));
   gap: 20px;
 }
 
@@ -195,6 +195,15 @@
   white-space: pre-wrap;
 }
 
+/* 記録画像 */
+.recordImage {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
 /* コメント */
 .comments {
   border-top: 1px solid var(--border);
@@ -207,13 +216,25 @@
   flex-direction: column;
   gap: 8px;
   margin-bottom: 12px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .comment {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
   font-size: 14px;
+}
+
+.commentContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.commentTop {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
 }
 
 .commentAuthor {
@@ -224,13 +245,79 @@
 
 .commentBody {
   color: var(--text);
-  flex: 1;
+  line-height: 1.6;
 }
 
 .commentDate {
   font-size: 12px;
   color: var(--text-muted);
   white-space: nowrap;
+}
+
+.commentImage {
+  max-width: 200px;
+  border-radius: 10px;
+  margin-top: 4px;
+}
+
+.commentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.commentInputArea {
+  display: flex;
+  gap: 8px;
+}
+
+.commentImageBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: background-color 0.2s;
+}
+
+.commentImageBtn:hover {
+  background-color: var(--primary-light);
+}
+
+.commentImageInput {
+  display: none;
+}
+
+.commentImagePreviewWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.commentImagePreview {
+  max-width: 160px;
+  border-radius: 10px;
+}
+
+.commentImageRemove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  color: white;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .commentForm {

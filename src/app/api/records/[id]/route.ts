@@ -27,10 +27,11 @@ export async function PATCH(
         food_amount = ${body.food_amount ?? null},
         excretion   = ${body.excretion ?? null},
         condition   = ${body.condition ?? null},
-        memo        = ${body.memo ?? null}
+        memo        = ${body.memo ?? null},
+        image_data  = ${body.image_data ?? null}
       WHERE id = ${id}
         AND user_id = ${session.userId}
-      RETURNING id, weight, food_amount, excretion, condition, memo, created_at
+      RETURNING id, weight, food_amount, excretion, condition, memo, image_data, created_at
     `
 
     if (!record) return Response.json({ error: '記録が見つかりません' }, { status: 404 })

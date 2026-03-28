@@ -20,6 +20,7 @@ type HealthRecord = {
   excretion: string | null
   condition: string | null
   memo: string | null
+  image_data: string | null
   created_at: string
 }
 
@@ -29,6 +30,7 @@ type Comment = {
   user_id: string
   username: string
   body: string
+  image_data: string | null
   created_at: string
 }
 
@@ -44,7 +46,7 @@ export default async function HealthRecordsPage() {
   if (!session) redirect('/login')
 
   const records: HealthRecord[] = await sql`
-    SELECT r.id, r.user_id, r.weight, r.food_amount, r.excretion, r.condition, r.memo, r.created_at,
+    SELECT r.id, r.user_id, r.weight, r.food_amount, r.excretion, r.condition, r.memo, r.image_data, r.created_at,
            u.username
     FROM records r
     JOIN users u ON u.id = r.user_id
@@ -52,11 +54,11 @@ export default async function HealthRecordsPage() {
   `
 
   const comments: Comment[] = await sql`
-    SELECT c.id, c.record_id, c.user_id, c.body, c.created_at,
+    SELECT c.id, c.record_id, c.user_id, c.body, c.image_data, c.created_at,
            u.username
     FROM comments c
     JOIN users u ON u.id = c.user_id
-    ORDER BY c.created_at ASC
+    ORDER BY c.created_at DESC
   `
 
   const commentsByRecord = comments.reduce<{ [key: string]: Comment[] }>((acc, c) => {
@@ -140,6 +142,11 @@ export default async function HealthRecordsPage() {
                   </div>
                 )}
               </dl>
+
+              {record.image_data && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={record.image_data} alt="記録の写真" className={styles.recordImage} />
+              )}
 
               <CommentSection
                 recordId={record.id}

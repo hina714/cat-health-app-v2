@@ -2,14 +2,14 @@
   --bg:            #FEF0F5;
   --surface:       #ffffff;
   --primary:       #F2A0B8;
-  --primary-dark:  #E07898;
+  --primary-dark:  #D4607A;
   --primary-light: #FFD8E8;
   --secondary:     #D4AAEE;
-  --secondary-dark:#B888D8;
+  --secondary-dark:#9B6EC8;
   --primary-grad:  linear-gradient(135deg, #F2A0B8, #C8A0E0);
-  --text:          #5A3A4A;
-  --text-muted:    #A88898;
-  --border:        #F5C8D8;
+  --text:          #3D3D3D;
+  --text-muted:    #888888;
+  --border:        #F0BECE;
   --shadow:        0 4px 24px rgba(242, 160, 184, 0.25);
 }
 

@@ -1,4 +1,8 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
 import { cookies } from 'next/headers'
+
+export const metadata: Metadata = { title: '記録を編集 | 猫の健康ノート' }
 import { notFound, redirect } from 'next/navigation'
 import { verifySession, SESSION_COOKIE } from '@/lib/session'
 import { sql } from '@/lib/db'
@@ -30,6 +34,7 @@ export default async function EditRecordPage({
 
   return (
     <main className={styles.main}>
+      <Link href="/records" className={styles.backLink}>← 記録一覧へ戻る</Link>
       <h1 className={styles.title}>記録を編集</h1>
       <RecordForm
         mode="edit"

@@ -1,4 +1,8 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
 import { cookies } from 'next/headers'
+
+export const metadata: Metadata = { title: '記録する | 猫の健康ノート' }
 import { redirect } from 'next/navigation'
 import { verifySession, SESSION_COOKIE } from '@/lib/session'
 import RecordForm from '../RecordForm'
@@ -12,6 +16,7 @@ export default async function NewRecordPage() {
 
   return (
     <main className={styles.main}>
+      <Link href="/records" className={styles.backLink}>← 記録一覧へ戻る</Link>
       <h1 className={styles.title}>今日の記録</h1>
       <RecordForm mode="new" />
     </main>

@@ -4,9 +4,22 @@
   padding: 52px 24px;
 }
 
+.backLink {
+  display: inline-block;
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: var(--primary-dark);
+}
+
 .title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
-  color: #4a4458;
+  color: var(--text);
   margin-bottom: 36px;
 }

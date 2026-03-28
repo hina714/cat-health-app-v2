@@ -18,6 +18,9 @@ export default function Header() {
       <Link href="/" className={styles.logo}>
         猫の健康ノート
       </Link>
+      <nav className={styles.nav}>
+        <Link href="/records" className={styles.navLink}>健康記録</Link>
+      </nav>
       <form action={logout}>
         <button type="submit" className={styles.logoutButton}>
           ログアウト

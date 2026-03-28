@@ -7,69 +7,92 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  color: #4a4458;
+  color: var(--text);
 }
 
 .input {
   padding: 10px 14px;
-  border: 1.5px solid #e9d5f5;
+  border: 1.5px solid var(--border);
   border-radius: 12px;
-  font-size: 14px;
-  color: #4a4458;
+  font-size: 15px;
+  color: var(--text);
   outline: none;
   max-width: 160px;
-  transition: border-color 0.2s;
+  background-color: var(--bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input:focus {
-  border-color: #a78bfa;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(242, 160, 184, 0.2);
 }
 
+/* ラジオボタン → タグ選択型 */
 .radioGroup {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .radioLabel {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
   font-size: 14px;
-  color: #4a4458;
+  color: var(--text-muted);
   cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+  user-select: none;
 }
 
+.radioLabel:hover {
+  border-color: var(--primary);
+  color: var(--text);
+}
+
+/* 選択中 */
+.radioLabel:has(.radio:checked) {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ラジオボタン本体は非表示 */
 .radio {
-  accent-color: #a78bfa;
+  display: none;
 }
 
 .textarea {
-  padding: 10px 14px;
-  border: 1.5px solid #e9d5f5;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
   border-radius: 12px;
-  font-size: 14px;
-  color: #4a4458;
+  font-size: 15px;
+  color: var(--text);
+  background-color: var(--bg);
   outline: none;
   resize: vertical;
   font-family: inherit;
-  line-height: 1.6;
-  transition: border-color 0.2s;
+  line-height: 1.7;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .textarea:focus {
-  border-color: #a78bfa;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(242, 160, 184, 0.2);
 }
 
 .errorMsg {
-  font-size: 13px;
-  color: #ef4444;
+  font-size: 14px;
+  color: #c0392b;
 }
 
 .actions {
@@ -80,15 +103,20 @@
 }
 
 .btnPrimary {
-  padding: 10px 24px;
-  background: linear-gradient(135deg, #f472b6, #a78bfa);
+  padding: 11px 28px;
+  background: var(--primary-grad);
   color: #fff;
   border: none;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-1px);
 }
 
 .btnPrimary:disabled {
@@ -97,17 +125,17 @@
 }
 
 .btnCancel {
-  padding: 10px 24px;
+  padding: 11px 28px;
   background: transparent;
-  color: #9d8fa8;
-  border: 1.5px solid #e9d5f5;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border);
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .btnCancel:hover {
-  background-color: #fdf2f8;
+  background-color: var(--primary-light);
 }

@@ -27,8 +27,8 @@ export default async function HomePage() {
   return (
     <main className={styles.main}>
       <p className={styles.greeting}>✦ my cats ✦</p>
-      <h1 className={styles.title}>うちの子の健康を<br />一緒に守ろう🐾</h1>
-      <p className={styles.description}>毎日の記録が、大切なにゃんこを守る第一歩。</p>
+      <h1 className={styles.title}>うちの子の毎日の健康のために🐱</h1>
+      <p className={styles.description}>毎日の記録が、大切なうちの子を守る第一歩。</p>
 
       {session && cats.length > 0 && (
         <section className={styles.catsSection}>
@@ -59,9 +59,7 @@ export default async function HomePage() {
         <Link href="/records" className={styles.card}>
           <div className={styles.cardIcon}>📋</div>
           <h2 className={styles.cardTitle}>健康記録</h2>
-          <p className={styles.cardDescription}>
-            体重・食欲・排泄など日々の状態を記録できます。
-          </p>
+          <p className={styles.cardDescription}>体重 / 食事量 / 排泄 / 体調 / 様子・メモ</p>
         </Link>
       </div>
     </main>

@@ -1,5 +1,8 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
+
+export const metadata: Metadata = { title: '健康記録 | 猫の健康ノート' }
 import { redirect } from 'next/navigation'
 import { verifySession, SESSION_COOKIE } from '@/lib/session'
 import { sql } from '@/lib/db'
@@ -62,13 +65,17 @@ export default async function HealthRecordsPage() {
 
   return (
     <main className={styles.main}>
+      <Link href="/" className={styles.backLink}>← トップへ戻る</Link>
       <div className={styles.header}>
         <h1 className={styles.title}>健康記録</h1>
         <Link href="/records/new" className={styles.btnNew}>＋ 記録する</Link>
       </div>
 
       {records.length === 0 ? (
-        <p className={styles.empty}>まだ記録がありません。</p>
+        <div className={styles.emptyBox}>
+          <p className={styles.empty}>まだ記録がありません。</p>
+          <Link href="/records/new" className={styles.btnNew}>＋ 最初の記録をつける</Link>
+        </div>
       ) : (
         <div className={styles.list}>
           {records.map((record) => (

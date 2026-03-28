@@ -9,6 +9,7 @@ import { sql } from '@/lib/db'
 import styles from './page.module.css'
 import CommentSection from './CommentSection'
 import DeleteRecordButton from './DeleteRecordButton'
+import HealthChart from './HealthChart'
 
 type HealthRecord = {
   id: string
@@ -72,6 +73,19 @@ export default async function HealthRecordsPage() {
         <Link href="/records/new" className={styles.btnNew}>＋ 記録する</Link>
       </div>
 
+      {records.length >= 2 && (
+        <div className={styles.chartBox}>
+          <h2 className={styles.chartTitle}>グラフ</h2>
+          <HealthChart
+            data={records.map((r) => ({
+              date: r.created_at,
+              weight: r.weight ? Number(r.weight) : null,
+              food_amount: r.food_amount ? Number(r.food_amount) : null,
+            }))}
+          />
+        </div>
+      )}
+
       {records.length === 0 ? (
         <div className={styles.emptyBox}>
           <span className={styles.emptyIcon}>📋</span>
@@ -104,7 +118,7 @@ export default async function HealthRecordsPage() {
                 {record.food_amount && (
                   <div className={styles.field}>
                     <dt>食事量</dt>
-                    <dd>{record.food_amount}</dd>
+                    <dd>{record.food_amount}g</dd>
                   </div>
                 )}
                 {record.excretion && (

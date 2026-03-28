@@ -71,6 +71,46 @@
   display: none;
 }
 
+/* 食事量スライダー */
+.foodLabelRow {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.foodValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.foodValueEmpty {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.foodSliderRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.foodMin,
+.foodMax {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.foodSlider {
+  flex: 1;
+  height: 6px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+
 .textarea {
   padding: 12px 14px;
   border: 1.5px solid var(--border);

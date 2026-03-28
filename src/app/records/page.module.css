@@ -45,6 +45,21 @@
   opacity: 0.85;
 }
 
+.chartBox {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 24px 20px 16px;
+  margin-bottom: 32px;
+}
+
+.chartTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
 .emptyBox {
   display: flex;
   flex-direction: column;

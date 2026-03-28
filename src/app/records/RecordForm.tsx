@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './form.module.css'
 
-const FOOD_OPTIONS = ['よく食べた', '普通', '少ない', '食べなかった']
+
 const EXCRETION_OPTIONS = ['正常', '異常', 'なし']
 const CONDITION_OPTIONS = ['良好', '普通', '不調']
 
@@ -83,32 +83,25 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
 
       {/* 食事量 */}
       <div className={styles.field}>
-        <label className={styles.label}>食事量</label>
-        <div className={styles.radioGroup}>
-          {FOOD_OPTIONS.map((opt) => (
-            <label key={opt} className={styles.radioLabel}>
-              <input
-                type="radio"
-                name="food_amount"
-                value={opt}
-                checked={foodAmount === opt}
-                onChange={() => setFoodAmount(opt)}
-                className={styles.radio}
-              />
-              {opt}
-            </label>
-          ))}
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              name="food_amount"
-              value=""
-              checked={foodAmount === ''}
-              onChange={() => setFoodAmount('')}
-              className={styles.radio}
-            />
-            未記入
-          </label>
+        <div className={styles.foodLabelRow}>
+          <label className={styles.label}>食事量（g）</label>
+          {foodAmount
+            ? <span className={styles.foodValue}>{foodAmount}g</span>
+            : <span className={styles.foodValueEmpty}>未記入</span>
+          }
+        </div>
+        <div className={styles.foodSliderRow}>
+          <span className={styles.foodMin}>60g</span>
+          <input
+            type="range"
+            min="60"
+            max="120"
+            step="10"
+            value={foodAmount || '90'}
+            onChange={(e) => setFoodAmount(e.target.value)}
+            className={styles.foodSlider}
+          />
+          <span className={styles.foodMax}>120g</span>
         </div>
       </div>
 

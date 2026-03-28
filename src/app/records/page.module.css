@@ -82,7 +82,7 @@
 
 /* 記録カード */
 .card {
-  background: #fff;
+  background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: 20px;
   padding: 28px 32px;
@@ -122,9 +122,9 @@
 
 .deleteBtn {
   font-size: 13px;
-  color: #999;
+  color: var(--text-muted);
   background: none;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 3px 12px;
   cursor: pointer;
@@ -132,9 +132,9 @@
 }
 
 .deleteBtn:hover:not(:disabled) {
-  color: #c0392b;
-  border-color: #c0392b;
-  background-color: #fff5f5;
+  color: #b94040;
+  border-color: #b94040;
+  background-color: #fdf5f0;
 }
 
 .deleteBtn:disabled {
@@ -256,6 +256,6 @@
 
 .errorMsg {
   font-size: 13px;
-  color: #c0392b;
+  color: #b94040;
   margin-top: 4px;
 }

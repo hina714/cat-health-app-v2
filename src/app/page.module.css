@@ -74,14 +74,14 @@
   overflow: hidden;
   background-color: var(--primary-light);
   border: 3px solid var(--primary);
-  outline: 3px solid #ffffff;
+  outline: 3px solid var(--bg);
   outline-offset: 3px;
-  box-shadow: 0 4px 16px rgba(242, 160, 184, 0.3);
+  box-shadow: 0 4px 16px rgba(160, 113, 79, 0.2);
   transition: box-shadow 0.25s;
 }
 
 .catItem:hover .catIconWrapper {
-  box-shadow: 0 8px 24px rgba(242, 160, 184, 0.5);
+  box-shadow: 0 8px 24px rgba(160, 113, 79, 0.3);
 }
 
 .catIcon {
@@ -121,7 +121,7 @@
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 36px rgba(242, 160, 184, 0.25);
+  box-shadow: 0 10px 36px rgba(160, 113, 79, 0.2);
 }
 
 .cardIcon {

@@ -10,6 +10,11 @@ type Cat = {
   icon_data: string | null
 }
 
+type TodayRecord = {
+  username: string
+  created_at: Date
+}
+
 async function getAllCats(): Promise<Cat[]> {
   return sql`
     SELECT id, name, icon_data FROM cats
@@ -17,12 +22,33 @@ async function getAllCats(): Promise<Cat[]> {
   `
 }
 
+async function getTodayRecords(): Promise<TodayRecord[]> {
+  return sql`
+    SELECT u.username, r.created_at
+    FROM records r
+    JOIN users u ON u.id = r.user_id
+    WHERE (r.created_at AT TIME ZONE 'Asia/Tokyo')::date = (NOW() AT TIME ZONE 'Asia/Tokyo')::date
+    ORDER BY r.created_at ASC
+  `
+}
+
+function formatTime(date: Date): string {
+  const d = new Date(date)
+  const h = d.getUTCHours() + 9
+  const m = d.getUTCMinutes()
+  const hh = (h >= 24 ? h - 24 : h).toString().padStart(2, '0')
+  const mm = m.toString().padStart(2, '0')
+  return `${hh}:${mm}`
+}
+
 export default async function HomePage() {
   const cookieStore = await cookies()
   const token = cookieStore.get(SESSION_COOKIE)?.value
   const session = token ? await verifySession(token) : null
 
-  const cats = session ? await getAllCats() : []
+  const [cats, todayRecords] = session
+    ? await Promise.all([getAllCats(), getTodayRecords()])
+    : [[], []]
 
   return (
     <main className={styles.main}>
@@ -53,6 +79,27 @@ export default async function HomePage() {
             ))}
           </div>
         </section>
+      )}
+
+      {session && (
+        <div className={styles.todayBox}>
+          <p className={styles.todayLabel}>今日の記録</p>
+          {todayRecords.length === 0 ? (
+            <p className={styles.todayEmpty}>今日の記録がありません</p>
+          ) : (
+            <ul className={styles.todayList}>
+              {todayRecords.map((r, i) => (
+                <li key={i} className={styles.todayItem}>
+                  <span className={styles.todayUser}>{r.username}</span>
+                  が
+                  <span className={styles.todayTime}>{formatTime(r.created_at)}</span>
+                  に
+                  <Link href="/records" className={styles.todayLink}>記録しています</Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
 
       <div className={styles.cards}>

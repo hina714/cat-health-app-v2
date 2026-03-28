@@ -1,0 +1,129 @@
+.main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.card {
+  background-color: var(--surface);
+  border-radius: 28px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 48px rgba(242, 160, 184, 0.2);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  animation: fadeInUp 0.6s ease both;
+}
+
+.iconArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.iconWrapper {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-light);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.iconWrapper:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 28px rgba(242, 160, 184, 0.4);
+}
+
+.iconImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.iconDefault {
+  font-size: 48px;
+}
+
+.changeIconBtn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.changeIconBtn:hover {
+  color: var(--secondary-dark);
+}
+
+.name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  margin: 0;
+}
+
+.profileList {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 0;
+}
+
+.profileRow {
+  display: flex;
+  align-items: center;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.15s;
+}
+
+.profileRow:last-child {
+  border-bottom: none;
+}
+
+.profileRow:hover {
+  background-color: var(--bg);
+}
+
+.profileLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  width: 88px;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.profileValue {
+  font-size: 14px;
+  color: var(--text);
+  margin: 0;
+}
+
+.backLink {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  align-self: flex-start;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: var(--primary-dark);
+}

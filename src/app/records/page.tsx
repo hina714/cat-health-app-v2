@@ -8,6 +8,7 @@ import { verifySession, SESSION_COOKIE } from '@/lib/session'
 import { sql } from '@/lib/db'
 import styles from './page.module.css'
 import CommentSection from './CommentSection'
+import DeleteRecordButton from './DeleteRecordButton'
 
 type HealthRecord = {
   id: string
@@ -73,7 +74,9 @@ export default async function HealthRecordsPage() {
 
       {records.length === 0 ? (
         <div className={styles.emptyBox}>
-          <p className={styles.empty}>まだ記録がありません。</p>
+          <span className={styles.emptyIcon}>📋</span>
+          <p className={styles.empty}>まだ記録がありません</p>
+          <p className={styles.emptyDesc}>体重・食事量・体調などを記録して<br />うちの子の健康を管理しましょう</p>
           <Link href="/records/new" className={styles.btnNew}>＋ 最初の記録をつける</Link>
         </div>
       ) : (
@@ -84,7 +87,10 @@ export default async function HealthRecordsPage() {
                 <span className={styles.author}>{record.username}</span>
                 <span className={styles.date}>{formatDate(record.created_at)}</span>
                 {record.user_id === session.userId && (
-                  <Link href={`/records/${record.id}/edit`} className={styles.editLink}>編集</Link>
+                  <>
+                    <Link href={`/records/${record.id}/edit`} className={styles.editLink}>編集</Link>
+                    <DeleteRecordButton recordId={record.id} />
+                  </>
                 )}
               </div>
 

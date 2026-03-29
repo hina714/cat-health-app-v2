@@ -3,8 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './form.module.css'
+import { compressImage } from '@/lib/compressImage'
 
-const FOOD_OPTIONS = ['よく食べた', '普通', '少ない', '食べなかった']
+
 const EXCRETION_OPTIONS = ['正常', '異常', 'なし']
 const CONDITION_OPTIONS = ['良好', '普通', '不調']
 
@@ -16,13 +17,21 @@ type InitialValues = {
   memo?: string
 }
 
+type PreviousValues = {
+  weight?: string
+  food_amount?: string
+  excretion?: string
+  condition?: string
+}
+
 type Props = {
   mode: 'new' | 'edit'
   recordId?: string
   initial?: InitialValues
+  previousValues?: PreviousValues
 }
 
-export default function RecordForm({ mode, recordId, initial = {} }: Props) {
+export default function RecordForm({ mode, recordId, initial = {}, previousValues }: Props) {
   const router = useRouter()
 
   const [weight, setWeight] = useState(initial.weight ?? '')
@@ -30,9 +39,17 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
   const [excretion, setExcretion] = useState(initial.excretion ?? '')
   const [condition, setCondition] = useState(initial.condition ?? '')
   const [memo, setMemo] = useState(initial.memo ?? '')
+  const [imageData, setImageData] = useState<string | null>(null)
 
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
+  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const compressed = await compressImage(file)
+    setImageData(compressed)
+  }
 
   async function handleSubmit() {
     setSaving(true)
@@ -50,6 +67,7 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
         excretion: excretion || null,
         condition: condition || null,
         memo: memo || null,
+        image_data: imageData || null,
       }),
     })
 
@@ -69,7 +87,12 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
 
       {/* 体重 */}
       <div className={styles.field}>
-        <label className={styles.label}>体重（kg）</label>
+        <label className={styles.label}>
+          体重（kg）
+          {previousValues?.weight && (
+            <span className={styles.prevHint}>前回: {previousValues.weight} kg</span>
+          )}
+        </label>
         <input
           type="number"
           step="0.01"
@@ -83,38 +106,41 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
 
       {/* 食事量 */}
       <div className={styles.field}>
-        <label className={styles.label}>食事量</label>
-        <div className={styles.radioGroup}>
-          {FOOD_OPTIONS.map((opt) => (
-            <label key={opt} className={styles.radioLabel}>
-              <input
-                type="radio"
-                name="food_amount"
-                value={opt}
-                checked={foodAmount === opt}
-                onChange={() => setFoodAmount(opt)}
-                className={styles.radio}
-              />
-              {opt}
-            </label>
-          ))}
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              name="food_amount"
-              value=""
-              checked={foodAmount === ''}
-              onChange={() => setFoodAmount('')}
-              className={styles.radio}
-            />
-            未記入
+        <div className={styles.foodLabelRow}>
+          <label className={styles.label}>
+            食事量（g）
+            {previousValues?.food_amount && (
+              <span className={styles.prevHint}>前回: {previousValues.food_amount}g</span>
+            )}
           </label>
+          {foodAmount
+            ? <span className={styles.foodValue}>{foodAmount}g</span>
+            : <span className={styles.foodValueEmpty}>未記入</span>
+          }
+        </div>
+        <div className={styles.foodSliderRow}>
+          <span className={styles.foodMin}>60g</span>
+          <input
+            type="range"
+            min="60"
+            max="120"
+            step="10"
+            value={foodAmount || '90'}
+            onChange={(e) => setFoodAmount(e.target.value)}
+            className={styles.foodSlider}
+          />
+          <span className={styles.foodMax}>120g</span>
         </div>
       </div>
 
       {/* 排泄 */}
       <div className={styles.field}>
-        <label className={styles.label}>排泄</label>
+        <label className={styles.label}>
+          排泄
+          {previousValues?.excretion && (
+            <span className={styles.prevHint}>前回: {previousValues.excretion}</span>
+          )}
+        </label>
         <div className={styles.radioGroup}>
           {EXCRETION_OPTIONS.map((opt) => (
             <label key={opt} className={styles.radioLabel}>
@@ -145,7 +171,12 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
 
       {/* 体調 */}
       <div className={styles.field}>
-        <label className={styles.label}>体調</label>
+        <label className={styles.label}>
+          体調
+          {previousValues?.condition && (
+            <span className={styles.prevHint}>前回: {previousValues.condition}</span>
+          )}
+        </label>
         <div className={styles.radioGroup}>
           {CONDITION_OPTIONS.map((opt) => (
             <label key={opt} className={styles.radioLabel}>
@@ -184,6 +215,33 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
           placeholder="気になったことや様子を記録しましょう"
           rows={4}
         />
+      </div>
+
+      {/* 画像 */}
+      <div className={styles.field}>
+        <label className={styles.label}>写真</label>
+        <label className={styles.imageLabel}>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className={styles.imageInput}
+          />
+          {imageData ? '写真を変更する' : '📷 写真を追加する'}
+        </label>
+        {imageData && (
+          <div className={styles.imagePreviewWrapper}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={imageData} alt="プレビュー" className={styles.imagePreview} />
+            <button
+              type="button"
+              onClick={() => setImageData(null)}
+              className={styles.imageRemove}
+            >
+              ✕
+            </button>
+          </div>
+        )}
       </div>
 
       {error && <p className={styles.errorMsg}>{error}</p>}

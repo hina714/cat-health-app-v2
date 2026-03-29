@@ -57,7 +57,7 @@
 }
 
 .changeIconBtn {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--primary-dark);
   text-decoration: underline;
@@ -70,7 +70,7 @@
 }
 
 .name {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text);
   text-align: center;
@@ -88,7 +88,7 @@
 .profileRow {
   display: flex;
   align-items: center;
-  padding: 13px 18px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--border);
   transition: background-color 0.15s;
 }
@@ -102,22 +102,21 @@
 }
 
 .profileLabel {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
   width: 88px;
   flex-shrink: 0;
-  letter-spacing: 0.02em;
 }
 
 .profileValue {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text);
   margin: 0;
 }
 
 .backLink {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   text-decoration: none;
   align-self: flex-start;

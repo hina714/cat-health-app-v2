@@ -19,14 +19,14 @@ export async function POST(
     const { id: recordId } = await params
     const body = await request.json()
 
-    if (!body.body || body.body.trim() === '') {
-      return Response.json({ error: 'コメントを入力してください' }, { status: 400 })
+    if ((!body.body || body.body.trim() === '') && !body.image_data) {
+      return Response.json({ error: 'コメントまたは画像を入力してください' }, { status: 400 })
     }
 
     const [comment] = await sql`
-      INSERT INTO comments (record_id, user_id, body)
-      VALUES (${recordId}, ${session.userId}, ${body.body.trim()})
-      RETURNING id, body, created_at
+      INSERT INTO comments (record_id, user_id, body, image_data)
+      VALUES (${recordId}, ${session.userId}, ${body.body?.trim() ?? ''}, ${body.image_data ?? null})
+      RETURNING id, body, image_data, created_at
     `
 
     return Response.json({ ok: true, comment }, { status: 201 })

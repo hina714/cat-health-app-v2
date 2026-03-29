@@ -1,7 +1,20 @@
 .main {
-  max-width: 640px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 52px 24px;
+  padding: 52px 40px;
+}
+
+.backLink {
+  display: inline-block;
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: var(--primary-dark);
 }
 
 .header {
@@ -12,17 +25,17 @@
 }
 
 .title {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: bold;
-  color: #4a4458;
+  color: var(--text);
 }
 
 .btnNew {
-  padding: 8px 18px;
-  background: linear-gradient(135deg, #f472b6, #a78bfa);
+  padding: 10px 20px;
+  background: var(--primary-grad);
   color: #fff;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   text-decoration: none;
   transition: opacity 0.2s;
@@ -32,23 +45,77 @@
   opacity: 0.85;
 }
 
+.chartBox {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 24px 20px 16px;
+  margin-bottom: 32px;
+}
+
+.chartTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.emptyBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 80px 24px;
+  background-color: var(--surface);
+  border: 1.5px dashed var(--border);
+  border-radius: 24px;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 48px;
+}
+
 .empty {
-  color: #9d8fa8;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.emptyDesc {
   font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-top: -8px;
 }
 
 .list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(560px, 1fr));
   gap: 20px;
+}
+
+/* 日付グループ */
+.dateGroup {
+  margin-bottom: 32px;
+}
+
+.dateGroupLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
 }
 
 /* 記録カード */
 .card {
-  background: #fff;
-  border: 1.5px solid #fce7f3;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
   border-radius: 20px;
-  padding: 24px;
+  padding: 28px 32px;
 }
 
 .cardHeader {
@@ -59,28 +126,50 @@
 }
 
 .author {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
-  color: #a78bfa;
+  color: var(--secondary-dark);
 }
 
 .date {
-  font-size: 12px;
-  color: #9d8fa8;
+  font-size: 13px;
+  color: var(--text-muted);
   flex: 1;
 }
 
 .editLink {
-  font-size: 12px;
-  color: #f472b6;
+  font-size: 13px;
+  color: var(--primary-dark);
   text-decoration: none;
-  border: 1px solid #f472b6;
+  border: 1px solid var(--primary-dark);
   border-radius: 12px;
-  padding: 2px 10px;
+  padding: 3px 12px;
 }
 
 .editLink:hover {
-  background-color: #fdf2f8;
+  background-color: var(--primary-light);
+}
+
+.deleteBtn {
+  font-size: 13px;
+  color: var(--text-muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 3px 12px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.deleteBtn:hover:not(:disabled) {
+  color: #b94040;
+  border-color: #b94040;
+  background-color: #fdf5f0;
+}
+
+.deleteBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* フィールド */
@@ -98,14 +187,14 @@
 }
 
 .field dt {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  color: #9d8fa8;
+  color: var(--text-muted);
 }
 
 .field dd {
-  font-size: 14px;
-  color: #4a4458;
+  font-size: 15px;
+  color: var(--text);
 }
 
 .fieldMemo {
@@ -115,16 +204,49 @@
 }
 
 .fieldMemo dd {
-  font-size: 13px;
-  color: #4a4458;
-  line-height: 1.6;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.7;
   white-space: pre-wrap;
+}
+
+/* 記録画像 */
+.recordImage {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 16px;
 }
 
 /* コメント */
 .comments {
-  border-top: 1px solid #fce7f3;
-  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.commentToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 4px 0 12px;
+  text-align: left;
+  transition: color 0.2s;
+}
+
+.commentToggle:hover {
+  color: var(--text);
+}
+
+.commentToggleIcon {
+  font-size: 10px;
 }
 
 .commentList {
@@ -133,30 +255,108 @@
   flex-direction: column;
   gap: 8px;
   margin-bottom: 12px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .comment {
+  font-size: 14px;
+}
+
+.commentContent {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.commentTop {
+  display: flex;
   align-items: baseline;
-  font-size: 13px;
+  gap: 8px;
 }
 
 .commentAuthor {
   font-weight: 600;
-  color: #a78bfa;
+  color: var(--secondary-dark);
   white-space: nowrap;
 }
 
 .commentBody {
-  color: #4a4458;
-  flex: 1;
+  color: var(--text);
+  line-height: 1.6;
 }
 
 .commentDate {
-  font-size: 11px;
-  color: #9d8fa8;
+  font-size: 12px;
+  color: var(--text-muted);
   white-space: nowrap;
+}
+
+.commentImage {
+  max-width: 200px;
+  border-radius: 10px;
+  margin-top: 4px;
+}
+
+.commentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.commentInputArea {
+  display: flex;
+  gap: 8px;
+}
+
+.commentImageBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: background-color 0.2s;
+}
+
+.commentImageBtn:hover {
+  background-color: var(--primary-light);
+}
+
+.commentImageInput {
+  display: none;
+}
+
+.commentImagePreviewWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.commentImagePreview {
+  max-width: 160px;
+  border-radius: 10px;
+}
+
+.commentImageRemove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  color: white;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .commentForm {
@@ -166,25 +366,25 @@
 
 .commentInput {
   flex: 1;
-  padding: 8px 12px;
-  border: 1.5px solid #e9d5f5;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
   border-radius: 20px;
-  font-size: 13px;
-  color: #4a4458;
+  font-size: 14px;
+  color: var(--text);
   outline: none;
 }
 
 .commentInput:focus {
-  border-color: #a78bfa;
+  border-color: var(--secondary);
 }
 
 .commentBtn {
-  padding: 8px 16px;
-  background: #a78bfa;
+  padding: 10px 18px;
+  background: var(--secondary-dark);
   color: #fff;
   border: none;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.2s;
@@ -196,7 +396,7 @@
 }
 
 .errorMsg {
-  font-size: 12px;
-  color: #ef4444;
+  font-size: 13px;
+  color: #b94040;
   margin-top: 4px;
 }

@@ -42,16 +42,17 @@ export async function POST(request: Request) {
     const body = await request.json()
 
     const [record] = await sql`
-      INSERT INTO records (user_id, weight, food_amount, excretion, condition, memo)
+      INSERT INTO records (user_id, weight, food_amount, excretion, condition, memo, image_data)
       VALUES (
         ${session.userId},
         ${body.weight ?? null},
         ${body.food_amount ?? null},
         ${body.excretion ?? null},
         ${body.condition ?? null},
-        ${body.memo ?? null}
+        ${body.memo ?? null},
+        ${body.image_data ?? null}
       )
-      RETURNING id, weight, food_amount, excretion, condition, memo, created_at
+      RETURNING id, weight, food_amount, excretion, condition, memo, image_data, created_at
     `
 
     return Response.json({ ok: true, record }, { status: 201 })

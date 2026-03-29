@@ -1,8 +1,10 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { SESSION_COOKIE } from '@/lib/session'
+import { SESSION_COOKIE, verifySession } from '@/lib/session'
+import { sql } from '@/lib/db'
 import styles from './Header.module.css'
+import NavLinks from './NavLinks'
 
 // フォーム送信時にサーバー側で実行されるログアウト処理
 async function logout() {
@@ -12,17 +14,33 @@ async function logout() {
   redirect('/login')
 }
 
-export default function Header() {
+export default async function Header() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get(SESSION_COOKIE)?.value
+  const session = token ? await verifySession(token) : null
+
+  let username = ''
+  if (session) {
+    const rows = await sql`SELECT username FROM users WHERE id = ${session.userId}`
+    username = rows[0]?.username ?? ''
+  }
+
   return (
     <header className={styles.header}>
       <Link href="/" className={styles.logo}>
         猫の健康ノート
       </Link>
-      <form action={logout}>
-        <button type="submit" className={styles.logoutButton}>
-          ログアウト
-        </button>
-      </form>
+      <nav className={styles.nav}>
+        <NavLinks />
+      </nav>
+      <div className={styles.userArea}>
+        {username && <span className={styles.username}>{username}</span>}
+        <form action={logout}>
+          <button type="submit" className={styles.logoutButton}>
+            ログアウト
+          </button>
+        </form>
+      </div>
     </header>
   )
 }

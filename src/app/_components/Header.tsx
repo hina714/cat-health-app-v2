@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { SESSION_COOKIE, verifySession } from '@/lib/session'
 import { sql } from '@/lib/db'
 import styles from './Header.module.css'
+import NavLinks from './NavLinks'
 
 // フォーム送信時にサーバー側で実行されるログアウト処理
 async function logout() {
@@ -30,9 +31,7 @@ export default async function Header() {
         猫の健康ノート
       </Link>
       <nav className={styles.nav}>
-        <Link href="/records" className={styles.navLink}>健康記録</Link>
-        <Link href="/graph" className={styles.navLink}>グラフ</Link>
-        <Link href="/library" className={styles.navLink}>ライブラリ</Link>
+        <NavLinks />
       </nav>
       <div className={styles.userArea}>
         {username && <span className={styles.username}>{username}</span>}

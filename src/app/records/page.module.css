@@ -95,6 +95,21 @@
   gap: 20px;
 }
 
+/* 日付グループ */
+.dateGroup {
+  margin-bottom: 32px;
+}
+
+.dateGroupLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
 /* 記録カード */
 .card {
   background: var(--surface);
@@ -207,7 +222,31 @@
 /* コメント */
 .comments {
   border-top: 1px solid var(--border);
-  padding-top: 16px;
+  padding-top: 12px;
+}
+
+.commentToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 4px 0 12px;
+  text-align: left;
+  transition: color 0.2s;
+}
+
+.commentToggle:hover {
+  color: var(--text);
+}
+
+.commentToggleIcon {
+  font-size: 10px;
 }
 
 .commentList {

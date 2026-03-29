@@ -24,8 +24,9 @@ function formatDate(dateStr: string) {
   return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
 }
 
-export default function CommentSection({ recordId, comments }: Props) {
+export default function CommentSection({ recordId, comments, currentUserId: _ }: Props) {
   const router = useRouter()
+  const [open, setOpen] = useState(comments.length === 0)
   const [body, setBody] = useState('')
   const [imageData, setImageData] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -59,68 +60,83 @@ export default function CommentSection({ recordId, comments }: Props) {
     setBody('')
     setImageData(null)
     setSubmitting(false)
+    setOpen(true)
     router.refresh()
   }
 
   return (
     <div className={styles.comments}>
-      {comments.length > 0 && (
-        <ul className={styles.commentList}>
-          {comments.map((c) => (
-            <li key={c.id} className={styles.comment}>
-              <div className={styles.commentContent}>
-                <div className={styles.commentTop}>
-                  <span className={styles.commentAuthor}>{c.username}</span>
-                  <span className={styles.commentDate}>{formatDate(c.created_at)}</span>
-                </div>
-                {c.body && <span className={styles.commentBody}>{c.body}</span>}
-                {c.image_data && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={c.image_data} alt="コメント画像" className={styles.commentImage} />
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* トグルヘッダー */}
+      <button
+        type="button"
+        className={styles.commentToggle}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span>💬 コメント{comments.length > 0 ? `（${comments.length}件）` : ''}</span>
+        <span className={styles.commentToggleIcon}>{open ? '▲' : '▼'}</span>
+      </button>
 
-      <div className={styles.commentForm}>
-        <div className={styles.commentInputArea}>
-          <input
-            type="text"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="コメントを追加..."
-            className={styles.commentInput}
-            onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit() }}
-          />
-          <label className={styles.commentImageBtn}>
-            📷
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className={styles.commentImageInput}
-            />
-          </label>
-        </div>
-        {imageData && (
-          <div className={styles.commentImagePreviewWrapper}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={imageData} alt="プレビュー" className={styles.commentImagePreview} />
-            <button type="button" onClick={() => setImageData(null)} className={styles.commentImageRemove}>✕</button>
+      {open && (
+        <>
+          {comments.length > 0 && (
+            <ul className={styles.commentList}>
+              {comments.map((c) => (
+                <li key={c.id} className={styles.comment}>
+                  <div className={styles.commentContent}>
+                    <div className={styles.commentTop}>
+                      <span className={styles.commentAuthor}>{c.username}</span>
+                      <span className={styles.commentDate}>{formatDate(c.created_at)}</span>
+                    </div>
+                    {c.body && <span className={styles.commentBody}>{c.body}</span>}
+                    {c.image_data && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={c.image_data} alt="コメント画像" className={styles.commentImage} />
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <div className={styles.commentForm}>
+            <div className={styles.commentInputArea}>
+              <input
+                type="text"
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                placeholder="コメントを追加..."
+                className={styles.commentInput}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit() }}
+              />
+              <label className={styles.commentImageBtn}>
+                📷
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className={styles.commentImageInput}
+                />
+              </label>
+            </div>
+            {imageData && (
+              <div className={styles.commentImagePreviewWrapper}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={imageData} alt="プレビュー" className={styles.commentImagePreview} />
+                <button type="button" onClick={() => setImageData(null)} className={styles.commentImageRemove}>✕</button>
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={submitting || (!body.trim() && !imageData)}
+              className={styles.commentBtn}
+            >
+              送信
+            </button>
           </div>
-        )}
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={submitting || (!body.trim() && !imageData)}
-          className={styles.commentBtn}
-        >
-          送信
-        </button>
-      </div>
-      {error && <p className={styles.errorMsg}>{error}</p>}
+          {error && <p className={styles.errorMsg}>{error}</p>}
+        </>
+      )}
     </div>
   )
 }

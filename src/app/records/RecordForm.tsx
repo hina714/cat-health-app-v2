@@ -17,13 +17,21 @@ type InitialValues = {
   memo?: string
 }
 
+type PreviousValues = {
+  weight?: string
+  food_amount?: string
+  excretion?: string
+  condition?: string
+}
+
 type Props = {
   mode: 'new' | 'edit'
   recordId?: string
   initial?: InitialValues
+  previousValues?: PreviousValues
 }
 
-export default function RecordForm({ mode, recordId, initial = {} }: Props) {
+export default function RecordForm({ mode, recordId, initial = {}, previousValues }: Props) {
   const router = useRouter()
 
   const [weight, setWeight] = useState(initial.weight ?? '')
@@ -79,7 +87,12 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
 
       {/* 体重 */}
       <div className={styles.field}>
-        <label className={styles.label}>体重（kg）</label>
+        <label className={styles.label}>
+          体重（kg）
+          {previousValues?.weight && (
+            <span className={styles.prevHint}>前回: {previousValues.weight} kg</span>
+          )}
+        </label>
         <input
           type="number"
           step="0.01"
@@ -94,7 +107,12 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
       {/* 食事量 */}
       <div className={styles.field}>
         <div className={styles.foodLabelRow}>
-          <label className={styles.label}>食事量（g）</label>
+          <label className={styles.label}>
+            食事量（g）
+            {previousValues?.food_amount && (
+              <span className={styles.prevHint}>前回: {previousValues.food_amount}g</span>
+            )}
+          </label>
           {foodAmount
             ? <span className={styles.foodValue}>{foodAmount}g</span>
             : <span className={styles.foodValueEmpty}>未記入</span>
@@ -117,7 +135,12 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
 
       {/* 排泄 */}
       <div className={styles.field}>
-        <label className={styles.label}>排泄</label>
+        <label className={styles.label}>
+          排泄
+          {previousValues?.excretion && (
+            <span className={styles.prevHint}>前回: {previousValues.excretion}</span>
+          )}
+        </label>
         <div className={styles.radioGroup}>
           {EXCRETION_OPTIONS.map((opt) => (
             <label key={opt} className={styles.radioLabel}>
@@ -148,7 +171,12 @@ export default function RecordForm({ mode, recordId, initial = {} }: Props) {
 
       {/* 体調 */}
       <div className={styles.field}>
-        <label className={styles.label}>体調</label>
+        <label className={styles.label}>
+          体調
+          {previousValues?.condition && (
+            <span className={styles.prevHint}>前回: {previousValues.condition}</span>
+          )}
+        </label>
         <div className={styles.radioGroup}>
           {CONDITION_OPTIONS.map((opt) => (
             <label key={opt} className={styles.radioLabel}>

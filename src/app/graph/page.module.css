@@ -80,7 +80,12 @@
   border: 1.5px solid var(--border);
   border-radius: 20px;
   padding: 24px 28px;
+}
+
+.tableScroll {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 400px;
 }
 
 .tableTitle {

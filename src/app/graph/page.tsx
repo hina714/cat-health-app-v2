@@ -67,6 +67,7 @@ export default async function GraphPage() {
 
           <div className={styles.tableBox}>
             <h2 className={styles.tableTitle}>記録一覧</h2>
+            <div className={styles.tableScroll}>
             <table className={styles.table}>
               <thead>
                 <tr>
@@ -91,6 +92,7 @@ export default async function GraphPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </>
       )}

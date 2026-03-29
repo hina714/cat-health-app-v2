@@ -39,6 +39,12 @@
   color: var(--text);
 }
 
+.navLinkActive {
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
 .userArea {
   display: flex;
   align-items: center;

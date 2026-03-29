@@ -10,11 +10,6 @@ type Cat = {
   icon_data: string | null
 }
 
-type TodayRecord = {
-  username: string
-  created_at: Date
-}
-
 type RecentRecord = {
   id: string
   username: string
@@ -45,16 +40,6 @@ async function getRecentRecords(): Promise<RecentRecord[]> {
   `
 }
 
-async function getTodayRecords(): Promise<TodayRecord[]> {
-  return sql`
-    SELECT u.username, r.created_at
-    FROM records r
-    JOIN users u ON u.id = r.user_id
-    WHERE (r.created_at AT TIME ZONE 'Asia/Tokyo')::date = (NOW() AT TIME ZONE 'Asia/Tokyo')::date
-    ORDER BY r.created_at ASC
-  `
-}
-
 function formatDateTime(date: Date): string {
   const d = new Date(date)
   let h = d.getUTCHours() + 9
@@ -65,13 +50,13 @@ function formatDateTime(date: Date): string {
   return `${month}/${day} ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`
 }
 
-function formatTime(date: Date): string {
-  const d = new Date(date)
-  const h = d.getUTCHours() + 9
-  const m = d.getUTCMinutes()
-  const hh = (h >= 24 ? h - 24 : h).toString().padStart(2, '0')
-  const mm = m.toString().padStart(2, '0')
-  return `${hh}:${mm}`
+function isTodayJST(date: Date): boolean {
+  const toJSTDate = (d: Date) => {
+    const ms = d.getTime() + 9 * 60 * 60 * 1000
+    const j = new Date(ms)
+    return `${j.getUTCFullYear()}-${j.getUTCMonth()}-${j.getUTCDate()}`
+  }
+  return toJSTDate(new Date(date)) === toJSTDate(new Date())
 }
 
 export default async function HomePage() {
@@ -79,9 +64,11 @@ export default async function HomePage() {
   const token = cookieStore.get(SESSION_COOKIE)?.value
   const session = token ? await verifySession(token) : null
 
-  const [cats, todayRecords, recentRecords] = session
-    ? await Promise.all([getAllCats(), getTodayRecords(), getRecentRecords()])
-    : [[], [], []]
+  const [cats, recentRecords] = session
+    ? await Promise.all([getAllCats(), getRecentRecords()])
+    : [[], []]
+
+  const hasTodayRecord = recentRecords.some((r) => isTodayJST(new Date(r.created_at)))
 
   return (
     <main className={styles.main}>
@@ -98,11 +85,7 @@ export default async function HomePage() {
                 <div className={styles.catIconWrapper}>
                   {cat.icon_data ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={cat.icon_data}
-                      alt={cat.name}
-                      className={styles.catIcon}
-                    />
+                    <img src={cat.icon_data} alt={cat.name} className={styles.catIcon} />
                   ) : (
                     <span className={styles.catIconDefault}>🐱</span>
                   )}
@@ -115,71 +98,63 @@ export default async function HomePage() {
       )}
 
       {session && (
-        <div className={styles.todayBox}>
-          <p className={styles.todayLabel}>今日の記録</p>
-          {todayRecords.length === 0 ? (
-            <p className={styles.todayEmpty}>今日の記録がありません</p>
-          ) : (
-            <ul className={styles.todayList}>
-              {todayRecords.map((r, i) => (
-                <li key={i} className={styles.todayItem}>
-                  <span className={styles.todayUser}>{r.username}</span>
-                  が
-                  <span className={styles.todayTime}>{formatTime(r.created_at)}</span>
-                  に
-                  <Link href="/records" className={styles.todayLink}>記録しています</Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-
-      {session && recentRecords.length > 0 && (
         <section className={styles.recentSection}>
-          <h2 className={styles.sectionTitle}>最近の記録（3日以内）</h2>
-          <div className={styles.recentList}>
-            {recentRecords.map((r) => (
-              <div key={r.id} className={styles.recentCard}>
-                <div className={styles.recentHeader}>
-                  <span className={styles.recentUser}>{r.username}</span>
-                  <span className={styles.recentDate}>{formatDateTime(r.created_at)}</span>
-                </div>
-                <dl className={styles.recentFields}>
-                  {r.weight && (
-                    <div className={styles.recentField}>
-                      <dt>体重</dt>
-                      <dd>{r.weight} kg</dd>
-                    </div>
-                  )}
-                  {r.food_amount && (
-                    <div className={styles.recentField}>
-                      <dt>食事量</dt>
-                      <dd>{r.food_amount}g</dd>
-                    </div>
-                  )}
-                  {r.excretion && (
-                    <div className={styles.recentField}>
-                      <dt>排泄</dt>
-                      <dd>{r.excretion}</dd>
-                    </div>
-                  )}
-                  {r.condition && (
-                    <div className={styles.recentField}>
-                      <dt>体調</dt>
-                      <dd>{r.condition}</dd>
-                    </div>
-                  )}
-                  {r.memo && (
-                    <div className={styles.recentField + ' ' + styles.recentFieldMemo}>
-                      <dt>メモ</dt>
-                      <dd>{r.memo}</dd>
-                    </div>
-                  )}
-                </dl>
-              </div>
-            ))}
+          <div className={styles.recentSectionHeader}>
+            <h2 className={styles.sectionTitle}>最近の記録（3日以内）</h2>
+            {!hasTodayRecord && (
+              <span className={styles.noTodayBadge}>🔔 今日はまだ記録がありません</span>
+            )}
           </div>
+
+          {recentRecords.length === 0 ? (
+            <div className={styles.recentEmpty}>
+              <p>3日以内の記録がありません</p>
+              <Link href="/records/new" className={styles.recentEmptyLink}>＋ 記録する</Link>
+            </div>
+          ) : (
+            <div className={styles.recentList}>
+              {recentRecords.map((r) => (
+                <div key={r.id} className={styles.recentCard}>
+                  <div className={styles.recentHeader}>
+                    <span className={styles.recentUser}>{r.username}</span>
+                    <span className={styles.recentDate}>{formatDateTime(r.created_at)}</span>
+                  </div>
+                  <dl className={styles.recentFields}>
+                    {r.weight && (
+                      <div className={styles.recentField}>
+                        <dt>体重</dt>
+                        <dd>{r.weight} kg</dd>
+                      </div>
+                    )}
+                    {r.food_amount && (
+                      <div className={styles.recentField}>
+                        <dt>食事量</dt>
+                        <dd>{r.food_amount}g</dd>
+                      </div>
+                    )}
+                    {r.excretion && (
+                      <div className={styles.recentField}>
+                        <dt>排泄</dt>
+                        <dd>{r.excretion}</dd>
+                      </div>
+                    )}
+                    {r.condition && (
+                      <div className={styles.recentField}>
+                        <dt>体調</dt>
+                        <dd>{r.condition}</dd>
+                      </div>
+                    )}
+                    {r.memo && (
+                      <div className={styles.recentField + ' ' + styles.recentFieldMemo}>
+                        <dt>メモ</dt>
+                        <dd>{r.memo}</dd>
+                      </div>
+                    )}
+                  </dl>
+                </div>
+              ))}
+            </div>
+          )}
           <Link href="/records" className={styles.recentMore}>すべての記録を見る →</Link>
         </section>
       )}

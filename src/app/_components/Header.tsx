@@ -20,10 +20,8 @@ export default async function Header() {
 
   let username = ''
   if (session) {
-    const [user] = await sql<{ username: string }[]>`
-      SELECT username FROM users WHERE id = ${session.userId}
-    `
-    username = user?.username ?? ''
+    const rows = await sql`SELECT username FROM users WHERE id = ${session.userId}`
+    username = rows[0]?.username ?? ''
   }
 
   return (
@@ -33,6 +31,8 @@ export default async function Header() {
       </Link>
       <nav className={styles.nav}>
         <Link href="/records" className={styles.navLink}>健康記録</Link>
+        <Link href="/graph" className={styles.navLink}>グラフ</Link>
+        <Link href="/library" className={styles.navLink}>ライブラリ</Link>
       </nav>
       <div className={styles.userArea}>
         {username && <span className={styles.username}>{username}</span>}

@@ -57,11 +57,16 @@ export async function DELETE(
 
     const { id } = await params
 
+    // 本人の記録か確認
+    const [record] = await sql`
+      SELECT id FROM records WHERE id = ${id} AND user_id = ${session.userId}
+    `
+    if (!record) return Response.json({ error: '記録が見つかりません' }, { status: 404 })
+
+    // コメントを先に削除してから記録を削除
+    await sql`DELETE FROM comments WHERE record_id = ${id}`
     const [deleted] = await sql`
-      DELETE FROM records
-      WHERE id = ${id}
-        AND user_id = ${session.userId}
-      RETURNING id
+      DELETE FROM records WHERE id = ${id} RETURNING id
     `
 
     if (!deleted) return Response.json({ error: '記録が見つかりません' }, { status: 404 })

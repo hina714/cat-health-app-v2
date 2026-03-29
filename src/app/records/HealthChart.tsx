@@ -20,6 +20,7 @@ type ChartData = {
 
 type Props = {
   data: ChartData[]
+  height?: number
 }
 
 function formatDate(dateStr: string) {
@@ -27,7 +28,7 @@ function formatDate(dateStr: string) {
   return `${d.getMonth() + 1}/${d.getDate()}`
 }
 
-export default function HealthChart({ data }: Props) {
+export default function HealthChart({ data, height = 260 }: Props) {
   const chartData = data
     .map((r) => ({
       date: formatDate(r.date),
@@ -37,7 +38,7 @@ export default function HealthChart({ data }: Props) {
     .reverse()
 
   return (
-    <ResponsiveContainer width="100%" height={260}>
+    <ResponsiveContainer width="100%" height={height}>
       <ComposedChart data={chartData} margin={{ top: 8, right: 24, left: 0, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#DFC4A5" />
         <XAxis
